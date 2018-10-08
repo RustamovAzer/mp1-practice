@@ -3,14 +3,14 @@
 void main() {
 	double x1, y1, x2, y2, r1, r2, d;
 	printf("VVedite coordinaty i radius pervoy okruzhnosti \n");
-	scanf_s("%lf %lf %lf", &x1, &y1, &r1);
+	scanf("%lf %lf %lf", &x1, &y1, &r1);
 	if (r1<0)
 	{
 		printf("Radius okruzhnosty - otritsatel'noe chislo \n");
 		return;
 	}
 	printf("VVedite coordinaty i radius vtoroy okruzhnosti \n");
-	scanf_s("%lf %lf %lf", &x2, &y2, &r2);
+	scanf("%lf %lf %lf", &x2, &y2, &r2);
 	if (r1<0)
 	{
 		printf("Radius okruzhnosty - otritsatel'noe chislo \n");
