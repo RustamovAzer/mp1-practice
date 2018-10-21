@@ -1,8 +1,8 @@
 #include <stdio.h>
-#include <locale.h>
 #include <stdlib.h>
 #include <time.h>
 #include <math.h>
+#include <locale.h>
 void main()
 {
 	srand((unsigned int)time(0));
