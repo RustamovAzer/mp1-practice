@@ -6,10 +6,10 @@
 void main()
 {
 	srand((unsigned int)time(0));
-	setlocale(LC_ALL, "Russian");
 	long input;
 	int n, i, k, j, nmax, nmin, cows, bulls;
 	int used[10] = { 0 }, num[10] = { 0 }, ninput[10] = { 0 }, ninused[10] = { 0 };
+	setlocale(LC_ALL, "Russian");
 	do {
 		printf("¬ведите длину (от 1 до 10) числа \n");
 		scanf("%d", &n);
