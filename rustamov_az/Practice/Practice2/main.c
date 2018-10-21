@@ -5,7 +5,7 @@
 #include <locale.h>
 void main()
 {
-	setlocale(LC_ALL, "Rus");
+	setlocale(LC_ALL, "Russian");
 	srand((unsigned int)time(0));
 	long input;
 	int n, i, k, j, nmax, nmin, cows, bulls;
