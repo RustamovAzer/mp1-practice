@@ -1,6 +1,7 @@
 ﻿#include <stdio.h>
 #include <locale.h>
-#define K 5
+#include <stdlib.h>
+#define K 10
 
 // Сортировка выбором (1)
 void choose_sort(int a[], int n)
@@ -21,7 +22,7 @@ void choose_sort(int a[], int n)
         a[minidx] = a[i];
         a[i] = min;
     }
-
+   
 }
 // Сортировка вставками (2)
 void insert_sort(int a[], int n)
@@ -45,12 +46,13 @@ void bubble_sort(int a[], int n)
     int i, j, temp;
     for (i = 0; i < n; i++)
     {
-        for (j = 1; j < n - i - 1; j++)
-        { 
+        for (j = 1; j < n - i; j++)
+        {
             if (a[j - 1] > a[j])
             {
                 temp = a[j];
                 a[j] = a[j - 1];
+                a[j - 1] = temp;
             }
         }
     }
@@ -60,11 +62,11 @@ void counting_sort(int a[], int n)
 {
     int count[K];
     int i, j, idx = 0;
-    for (i = 0; i < n; i++)
+    for (i = 0; i < K; i++)
         count[i] = 0;
     for (i = 0; i < n; i++)
         count[a[i]]++;
-    for (i = 0; i < n; i++)
+    for (i = 0; i < K; i++)
     {
         for (j = 0; j < count[i]; j++)
             a[idx++] = i;
@@ -72,33 +74,56 @@ void counting_sort(int a[], int n)
 }
 
 //Сортировка Хоара(быстрая) (5)
-void quick_sort(int a, int n1, int n2)
-{
-    int m = (n1 + n2) / 2;
-    int i = n1, j = n2;
-    quick_split(a, &i, &j, m);
-    if (i > n1)
-        quick_sort(a, n1, i);
-    if (j < n2)
-        quick_sort(a, j, n2);
-}
-void quick_split(int a[], int *i, int *j, int p)
+void quick_split(int *a, int *i, int *j, int p)
 {
     int tmp;
     do
     {
-        while (a[*i] < p) (*i)++;
-        while (a[*j] > p) (*j)--;
-        if (*i <= *j)
+        while (a[(*i)] < p) (*i)++;
+        while (a[(*j)] > p) (*j)--;
+        if ((*i) < (*j))
         {
             tmp = a[*i];
             a[*i] = a[*j];
             a[*j] = tmp;
         }
-    } while (*i < *j);
-} 
+    } while ((*i) < (*j));
+}
+void quick_sort(int *a, int n1, int n2)
+{
+    int m = (n1 + n2) / 2;
+    int i = n1, j = n2;
+    quick_split(a, &i, &j, a[m]);
+    if (i < n2)
+        quick_sort(a, n1, i);
+    if (j > n2)
+        quick_sort(a, j, n2);
+    
+}
+
 
 //Сортировка слиянием (6)
+void merge(int a[], int l, int m, int r)
+{
+    int *c, k;
+    c = (int*)malloc((r - l + 1)*sizeof(int));
+    int  i = l, j = m + 1;
+    do
+    {
+        if (a[i] <= a[j])
+            c[k++] = a[i++];
+        else
+            c[k++] = a[j++];
+        if (i = m + 1)
+            while (j <= r)
+                c[k++] = a[j++];
+        if (j > r)
+            while (i <= m);
+        c[k++] = a[i];
+    } while ((i < m) && (j < r));
+
+}
+
 void merge_sort(int a[], int l, int r)
 {
     int m;
@@ -107,26 +132,6 @@ void merge_sort(int a[], int l, int r)
     merge_sort(a, l, m);
     merge_sort(a, m+1, r);
     merge(a, l, m, r);
-}
-void merge(int a[], int l, int m, int r)
-{
-    int *c, k;
-    c = (int*)malloc((r-l+1)*sizeof(int));
-    int  i = l, j = m + 1;
-    do
-    {
-        if (a[i] <= a[j])
-            c[k++] = a[i++];
-        else
-            c[k++] = a[j++];
-        if (i = m+1)
-            while (j <= r)
-                c[k++] = a[j];
-        if (j > r)
-            while (i <= m);
-                c[k++] = a[i];
-    } while ((i < m) && (j < r));
-
 }
 
 void main()
@@ -142,10 +147,39 @@ void main()
     {
         choose_sort(a, 10);
         for (i = 0; i < 10; i++)
-            printf("%d\n", a);
+            printf("%d\n", a[i]);
     }
-        case '2'
+    case '2':
+    {
+        insert_sort(a, 10);
+        for (i = 0; i < 10; i++)
+            printf("%d\n", a[i]);
     }
-    
+    case '3':
+    {
+        bubble_sort(a, 10);
+        for (i = 0; i < 10; i++)
+            printf("%d\n", a[i]);
+    }
+    case '4': 
+    {
+        bubble_sort(a, 10);
+        for (i = 0; i < 10; i++)
+            printf("%d\n", a[i]);
+    }
+    case '5':
+    {
+        counting_sort(a, 10);
+        for (i = 0; i < 10; i++)
+            printf("%d\n", a[i]);
+    }
+    case '6':
+    {
+        quick_sort(a, 0, 10);
+        for (i = 0; i < 10; i++)
+            printf("%d\n", a[i]);
+    }
+    }
+    scanf("%d", &i);
     
 }
