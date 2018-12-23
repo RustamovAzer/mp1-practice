@@ -190,7 +190,7 @@ int ListDirectoryContents(const wchar_t *sDir, ULONGLONG **sizes, wchar_t ***nam
     return i;
 }
 
-
+//Ввод данных с клавиатуры
 void input(wchar_t **str_convert_to)
 {
     char *input;
@@ -201,6 +201,7 @@ void input(wchar_t **str_convert_to)
     swprintf(*str_convert_to, BUFFER_SIZE, L"%hs", input);
     free(input);
 }
+//Меню
 void menu()
 {
     printf("1 - сортировка выбором\n");
@@ -211,6 +212,7 @@ void menu()
     printf("6 - сортировка слиянием\n");
     printf("7 - Выйти из программы\n");
 }
+//Вывод данных
 void output(int *Idxes, wchar_t **names, ULONGLONG *sizes, int count)
 {
     int i;
