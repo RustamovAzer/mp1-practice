@@ -1,54 +1,57 @@
 ﻿#include <stdio.h>
-#include <locale.h>
 #include <stdlib.h>
-#define K 10
+#include <time.h>
+#include <locale.h>
+#include <windows.h>
+#include <string.h>
+#define K 100
+#define MAX_LEN 100
+#define BUFFER_SIZE 2048
 
 // Сортировка выбором (1)
-void choose_sort(int a[], int n)
+void choose_sort(int *a, ULONGLONG *size, int n)
 {
-    int i, j, min, minidx;
+    int i, j, tmp, ind;
     for (i = 0; i < n - 1; i++)
     {
-        min = a[i];
-        minidx = i;
+        ind = i;
         for (j = i + 1; j < n; j++)
         {
-            if (a[j] < min)
-            {
-                min = a[j];
-                minidx = j;
-            }
+            if (size[a[ind]] > size[a[j]])
+                ind = j;
         }
-        a[minidx] = a[i];
-        a[i] = min;
+        tmp = a[ind];
+        a[ind] = a[i];
+        a[i] = tmp;
     }
-   
 }
+
 // Сортировка вставками (2)
-void insert_sort(int a[], int n)
+void insert_sort(int *a, ULONGLONG *size, int n)
 {
-    int i, j, temp;
+    int i, j, tmp;
     for (i = 1; i < n; i++)
     {
-        temp = a[i];
+        tmp = a[i];
         j = i - 1;
-        while ((j >= 0) && (a[j]>temp))
+        while ((j >= 0) && (size[a[j]] > size[tmp]))
         {
             a[j + 1] = a[j];
-            a[j--] = temp;
+            a[j] = tmp;
+            j--;
         }
     }
-
 }
+
 // Пузырьковая сортировка (3)
-void bubble_sort(int a[], int n)
+void bubble_sort(int *a, ULONGLONG *size, int n)
 {
     int i, j, temp;
     for (i = 0; i < n; i++)
     {
         for (j = 1; j < n - i; j++)
         {
-            if (a[j - 1] > a[j])
+            if (size[a[j]] < size[a[j - 1]])
             {
                 temp = a[j];
                 a[j] = a[j - 1];
@@ -58,128 +61,239 @@ void bubble_sort(int a[], int n)
     }
 }
 // Сортировка подсчётом (4)
-void counting_sort(int a[], int n)
+void counting_sort(int *a, ULONGLONG *size, int n)
 {
-    int count[K];
+    int *b = (int*)malloc(K * sizeof(int));
     int i, j, idx = 0;
+    int h = 0;
     for (i = 0; i < K; i++)
-        count[i] = 0;
+        b[i] = 0;
     for (i = 0; i < n; i++)
-        count[a[i]]++;
+        b[size[a[i]]]++;
     for (i = 0; i < K; i++)
     {
-        for (j = 0; j < count[i]; j++)
-            a[idx++] = i;
+        if (b[i]>0)
+        {
+            h = 0;
+            for (j = 0; j < b[i]; j++)
+            {
+                while (size[h] != i)
+                    h++;
+                a[idx++] = h++;
+            }
+        }
     }
+    free(b);
 }
 
 //Сортировка Хоара(быстрая) (5)
-void quick_split(int *a, int *i, int *j, int p)
+void quick_split(int *a, ULONGLONG *size, int *i, int *j, ULONGLONG p)
 {
     int tmp;
-    do
-    {
-        while (a[(*i)] < p) (*i)++;
-        while (a[(*j)] > p) (*j)--;
-        if ((*i) < (*j))
+    do {
+        while (size[a[(*i)]] < p)
+            (*i)++;
+        while (size[a[(*j)]] > p)
+            (*j)--;
+        if ((*i) <= (*j))
         {
-            tmp = a[*i];
-            a[*i] = a[*j];
-            a[*j] = tmp;
+            tmp = a[(*i)];
+            a[(*i)] = a[(*j)];
+            a[(*j)] = tmp;
+            (*i)++;
+            (*j)--;
         }
     } while ((*i) < (*j));
 }
-void quick_sort(int *a, int n1, int n2)
+
+void quick_sort(int *a, ULONGLONG *size, int n1, int n2)
 {
     int m = (n1 + n2) / 2;
     int i = n1, j = n2;
-    quick_split(a, &i, &j, a[m]);
+    quick_split(a, size, &i, &j, size[a[m]]);
+    if (j > n1)
+        quick_sort(a, size, n1, j);
     if (i < n2)
-        quick_sort(a, n1, i);
-    if (j > n2)
-        quick_sort(a, j, n2);
-    
+        quick_sort(a, size, i, n2);
 }
-
 
 //Сортировка слиянием (6)
-void merge(int a[], int l, int m, int r)
+void merge(int *a, ULONGLONG *size, int l, int m, int r)
 {
-    int *c, k;
-    c = (int*)malloc((r - l + 1)*sizeof(int));
-    int  i = l, j = m + 1;
-    do
+    int i, j = m + 1, h, tmp;
+    for (i = l; ((i < r) && (j <= r)); i++)
     {
-        if (a[i] <= a[j])
-            c[k++] = a[i++];
-        else
-            c[k++] = a[j++];
-        if (i = m + 1)
-            while (j <= r)
-                c[k++] = a[j++];
-        if (j > r)
-            while (i <= m);
-        c[k++] = a[i];
-    } while ((i < m) && (j < r));
+        if (size[a[i]] > size[a[j]])
+        {
+            tmp = a[j];
+            for (h = j; h > i; h--)
+                a[h] = a[h - 1];
+            a[i] = tmp;
+            j++;
+        }
+    }
 
 }
 
-void merge_sort(int a[], int l, int r)
+void merge_sort(int *a, ULONGLONG *size, int l, int r)
 {
     int m;
-    if (l >= r)return;
+    if (l >= r) return;
     m = (l + r) / 2;
-    merge_sort(a, l, m);
-    merge_sort(a, m+1, r);
-    merge(a, l, m, r);
+    merge_sort(a, size, l, m);
+    merge_sort(a, size, m + 1, r);
+    merge(a, size, l, m, r);
 }
 
+
+int ListDirectoryContents(const wchar_t *sDir, ULONGLONG **sizes, wchar_t ***names)
+{
+    int i = 0;
+    WIN32_FIND_DATA fdFile;
+    HANDLE hFind = NULL;
+    wchar_t *sPath;
+    sPath = (wchar_t*)malloc(BUFFER_SIZE * sizeof(wchar_t));
+
+    wsprintf(sPath, L"%s\\*.*", sDir);
+    if ((hFind = FindFirstFile(sPath, &fdFile)) == INVALID_HANDLE_VALUE)
+        return -1;
+
+    
+    do
+    {
+        if (wcscmp(fdFile.cFileName, L".") != 0 && wcscmp(fdFile.cFileName, L"..") != 0)
+            i++;
+    } while (FindNextFile(hFind, &fdFile));
+
+    hFind = FindFirstFile(sPath, &fdFile);
+    *names = (wchar_t**)malloc(i * sizeof(wchar_t*));
+    *sizes = (ULONGLONG*)malloc(i * sizeof(ULONGLONG));
+    i = 0;
+    do
+    {
+        if (wcscmp(fdFile.cFileName, L".") != 0 && wcscmp(fdFile.cFileName, L"..") != 0)
+        {
+            ULONGLONG fileSize = fdFile.nFileSizeHigh;
+            fileSize <<= sizeof(fdFile.nFileSizeHigh) * 8;
+            fileSize |= fdFile.nFileSizeLow;
+
+            (*names)[i] = (wchar_t*)malloc(BUFFER_SIZE * sizeof(wchar_t));
+            (*sizes)[i] = fileSize;
+            wsprintf(sPath, L"%s\\%s", sDir, fdFile.cFileName);
+            wsprintf((*names)[i], L"%s", sPath);
+            i++;
+        }
+    } while (FindNextFile(hFind, &fdFile));
+    FindClose(hFind);
+
+    free(sPath);
+    return i;
+}
+
+
+void input(wchar_t **str_convert_to)
+{
+    char *input;
+    *str_convert_to = (wchar_t*)malloc(BUFFER_SIZE * sizeof(wchar_t));
+    input = (char*)malloc(BUFFER_SIZE * sizeof(char));
+    fgets(input, BUFFER_SIZE, stdin);
+    input[strlen(input) - 1] = '\0';
+    swprintf(*str_convert_to, BUFFER_SIZE, L"%hs", input);
+    free(input);
+}
+void menu()
+{
+    printf("1 - сортировка выбором\n");
+    printf("2 - сортировка вставками\n");
+    printf("3 - пузырьковая сортировка\n");
+    printf("4 - сортировка подсчетом(не работает с данными больших размеров)\n");
+    printf("5 - быстрая сортировка (Хоара)\n");
+    printf("6 - сортировка слиянием\n");
+    printf("7 - Выйти из программы\n");
+}
+void output(int *Idxes, wchar_t **names, ULONGLONG *sizes, int count)
+{
+    int i;
+    for (i = 0; i < count; i++)
+    {
+        wprintf(L"Файл: %s Размер: ", names[Idxes[i]]);
+        printf("%lld байт", sizes[Idxes[i]]);
+        printf("\n");
+    }
+}
 void main()
 {
+    int c, i = 0;
+    int* Idxes;
+    int count = 0;
+    ULONGLONG* sizes;
+    wchar_t** names;
+    wchar_t* path = (wchar_t*)malloc(BUFFER_SIZE * sizeof(wchar_t));
+    clock_t start, end;
+    float total_time = 0.0f;
+    setlocale(LC_ALL, "Russian");
+    
+    do
+    {
+        printf("\nВведите путь к папке: ");
+        input(&path);
+        count = ListDirectoryContents(path, &sizes, &names);
+        if (count == -1)
+        {
+            printf("Путь не найден\n");
+            continue;
+        }
+        if (count == 0)
+        {
+            printf("В папке нет элементов\n");
+            continue;
+        }
+    } while (count < 1);
+        do {
+            menu();
+            Idxes = (int*)malloc(count * sizeof(int));
+            for (i = 0; i < count; i++)
+                Idxes[i] = i;
+            scanf("%d", &c);
+            start = clock();
+            switch (c)
+            {
+            case 1:
+                choose_sort(Idxes, sizes, count);
+                break;
+            case 2:
+                insert_sort(Idxes, sizes, count);
+                break;
+            case 3:
+                bubble_sort(Idxes, sizes, count);
+                break;
+            case 4:
+                counting_sort(Idxes, sizes, count);
+                break;
+            case 5:
+                quick_sort(Idxes, sizes, 0, count - 1);
+                break;
+            case 6:
+                merge_sort(Idxes, sizes, 0, count - 1);
+                break;
 
-    int a[10] = {6,3,8,3,9,6,8,9,311,1};
-    int i;
-    char c;
-    scanf("%c", &c);
-    switch (c)
-    {
-    case '1':
-    {
-        choose_sort(a, 10);
-        for (i = 0; i < 10; i++)
-            printf("%d\n", a[i]);
-    }
-    case '2':
-    {
-        insert_sort(a, 10);
-        for (i = 0; i < 10; i++)
-            printf("%d\n", a[i]);
-    }
-    case '3':
-    {
-        bubble_sort(a, 10);
-        for (i = 0; i < 10; i++)
-            printf("%d\n", a[i]);
-    }
-    case '4': 
-    {
-        bubble_sort(a, 10);
-        for (i = 0; i < 10; i++)
-            printf("%d\n", a[i]);
-    }
-    case '5':
-    {
-        counting_sort(a, 10);
-        for (i = 0; i < 10; i++)
-            printf("%d\n", a[i]);
-    }
-    case '6':
-    {
-        quick_sort(a, 0, 10);
-        for (i = 0; i < 10; i++)
-            printf("%d\n", a[i]);
-    }
-    }
-    scanf("%d", &i);
+            }
+            end = clock();
+            total_time = (float)(end - start) / CLOCKS_PER_SEC;
+            output(Idxes, names, sizes, count);
+            printf("Время, затраченное на сортировку: %.3f с\n", total_time);
+            free(Idxes);
+        } while (c != 7);
+        for (i = 0; i < count; i++)
+            free(names[i]);
+        free(names);
+        free(sizes);
+        free(path);
     
 }
+
+
+
+
+
+
