@@ -257,30 +257,41 @@ void main()
             for (i = 0; i < count; i++)
                 Idxes[i] = i;
             scanf("%d", &c);
-            start = clock();
             switch (c)
             {
             case 1:
+                start = clock();
                 choose_sort(Idxes, sizes, count);
+                end = clock();
                 break;
             case 2:
+                start = clock();
                 insert_sort(Idxes, sizes, count);
+                end = clock();
                 break;
             case 3:
+                start = clock();
                 bubble_sort(Idxes, sizes, count);
+                end = clock();
                 break;
             case 4:
+                start = clock();
                 counting_sort(Idxes, sizes, count);
+                end = clock();
                 break;
             case 5:
+                start = clock();
                 quick_sort(Idxes, sizes, 0, count - 1);
+                end = clock();
                 break;
             case 6:
+                start = clock();
                 merge_sort(Idxes, sizes, 0, count - 1);
+                end = clock();
                 break;
 
             }
-            end = clock();
+            
             total_time = (float)(end - start) / CLOCKS_PER_SEC;
             output(Idxes, names, sizes, count);
             printf("Время, затраченное на сортировку: %.3f с\n", total_time);
