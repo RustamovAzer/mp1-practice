@@ -14,7 +14,7 @@ void ArrPrint(const char* name, int* arr, int n)
 void ArrScan(const char* name, int* arr)
 {
 	FILE* f;
-	int n;
+	int n = -1;
 	f = fopen(name, "rb");
 	fscanf(f, "\d", n);
 	arr = new int[n];

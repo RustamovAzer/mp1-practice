@@ -1,13 +1,18 @@
 #include <iostream>
 #include <locale.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string>
 #include "ArrScanPrint.h"
 #include "Sorting.h"
 #include "RAG.h"
+using namespace std;
 int main()
 {
+	
 	setlocale(LC_ALL, "Russian");
-	int *arr, *a;
-	char *name,*name2;
+	int *arr = 0, *a;
+	char name[1024], name2[1024];
 	char ch;
 	int n;
 	printf("¬ведите количество элементов массива\n");
@@ -15,7 +20,7 @@ int main()
 	a = new int[n];
 	RAG(a, n);
 	printf("¬ведите название файла\n");
-	scanf("%s", name);
+	scanf_s("%s", &name, 1024);
 	ArrPrint(name, a, n);
 
 	printf("1 - сортировка выбором\n");
@@ -46,7 +51,7 @@ int main()
 	}
 
 	printf("¬ведите название второго файла\n");
-	scanf("%s", name2);
+	scanf_s("%s", &name2, 1024);
 	ArrPrint(name2, a,  n);
 	ArrScan(name2, arr);
 	for (int i = 0; i < n; i++)
