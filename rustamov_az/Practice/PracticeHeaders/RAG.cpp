@@ -6,10 +6,10 @@
 #define NMIN 1
 void RAG(int *arr, int n)
 {
-	srand((unsigned int)time(0));
+	srand((unsigned)time(0));
 	for (int i = 0; i < n; i++)
 	{
-		arr[i] = (int)(NMAX - NMIN) / RAND_MAX*rand() + NMIN;
+		arr[i] = (int)rand()%1000;
 	}
 
 }

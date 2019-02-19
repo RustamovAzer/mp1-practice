@@ -93,7 +93,7 @@ void merge(int merged[], int nD, int L[], int nL, int R[], int nR) {
 		}
 	}
 }
-void quickSort(int* a, int const n)
+void quickSort(int a[], int const n)
 {
 	int const nD = n;
 	int pivot = 0;
