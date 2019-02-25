@@ -65,10 +65,9 @@ int main()
 	memset(arr, 0, n * sizeof(int));
 
 	ArrRead(name2, arr);
-	printf("%d \n", arr[2]);printf("%d \n", arr[0]);
 	for (int i = 0; i < n; i++)
 	{
-		printf("%d \n", arr[i]);
+		printf("%d \n", a[i]);
 	}
 	scanf("%d", &n);
 }
