@@ -1,9 +1,10 @@
 #include <iostream>
 #include <locale.h>
+#include <cstdio>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
-#include "ArrScanPrint.h"
+#include "ArrReadWrite.h"
 #include "Sorting.h"
 #include "RAG.h"
 using namespace std;
@@ -24,8 +25,8 @@ int main()
 		printf("%d \n", a[i]);
 	}
 	printf("¬ведите название файла\n");
-	scanf_s("%s", name, 24);
-	ArrPrint(name, a, n);
+	scanf("%s", name);
+	ArrWrite(name, a, n);
 
 	printf("1 - сортировка выбором\n");
 	printf("2 - пузырькова€ сортировка\n");
@@ -57,14 +58,14 @@ int main()
 		printf("%d \n", a[i]);
 	}
 	printf("¬ведите название второго файла\n");
-	scanf_s("%s", name2, 24);
-	ArrPrint(name2, a,  n);
-	for (int i = 0; i < n; i++)
-	{
-		printf("%d \n", a[i]);
-	}
+	scanf("%s", name2);
+	ArrWrite(name2, a, n);
+
 	arr = new int[n];
-	ArrScan(name2, arr, n);
+	memset(arr, 0, n * sizeof(int));
+
+	ArrRead(name2, arr);
+	printf("%d \n", arr[2]);printf("%d \n", arr[0]);
 	for (int i = 0; i < n; i++)
 	{
 		printf("%d \n", arr[i]);

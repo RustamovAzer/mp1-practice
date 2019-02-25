@@ -18,10 +18,10 @@
     <ClInclude Include="Sorting.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ArrScanPrint.h">
+    <ClInclude Include="RAG.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RAG.h">
+    <ClInclude Include="ArrReadWrite.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -29,13 +29,13 @@
     <ClCompile Include="Sorting.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ArrScanPrint.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RAG.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ArrReadWrite.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
