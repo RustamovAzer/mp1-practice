@@ -1,8 +1,7 @@
 #include <iostream>
 #include <locale.h>
 #include <cstdio>
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdlib>
 #include <string>
 #include "ArrReadWrite.h"
 #include "Sorting.h"
@@ -60,14 +59,14 @@ int main()
 	printf("Введите название второго файла\n");
 	scanf("%s", name2);
 	ArrWrite(name2, a, n);
-
 	arr = new int[n];
 	memset(arr, 0, n * sizeof(int));
 
 	ArrRead(name2, arr);
+
 	for (int i = 0; i < n; i++)
 	{
-		printf("%d \n", a[i]);
+		printf("%d \n", arr[i]);
 	}
 	scanf("%d", &n);
 }
