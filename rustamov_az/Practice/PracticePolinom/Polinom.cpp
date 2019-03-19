@@ -4,7 +4,10 @@ using namespace std;
 
 Polinom::Polinom()
 {
-	head = 0;
+	Monom* a = new Monom;
+	a->coef = 0;
+	a->deg = 0;
+	head = a;
 }
 
 Polinom::Polinom(double coef, int deg)
@@ -103,6 +106,13 @@ Polinom::~Polinom()
 	DeleteAll();
 }
 
+Polinom Polinom::operator+(double a)
+{
+	Polinom rez(*this);
+	rez.Add(a, 0);
+	return rez;
+}
+
 Polinom Polinom::operator+(Polinom poli)
 {
 	Polinom rez(*this);
@@ -117,11 +127,173 @@ Polinom Polinom::operator+(Polinom poli)
 	return rez;
 }
 
-Polinom Polinom::operator*(Polinom a)
+Polinom Polinom::operator-(double a)
 {
-	Polinom rez();
+	Polinom rez(*this);
+	rez.Add(-a, 0);
+	return rez;
+}
+
+Polinom Polinom::operator-(Polinom poli)
+{
+	Polinom rez(*this);
+	Monom* a = poli.head;
+	do
+	{
+		rez.Add(-(a->coef), a->deg);
+		a = a->next;
+
+	} while (a);
+	rez.Sort();
+	return rez;
+}
+
+
+Polinom Polinom::operator*(Polinom poli)
+{
+	Polinom rez(0,0);
+	Monom* i = head;
+	Monom* j = poli.head;
+
+	while (i)
+	{
+		while (j)
+		{
+			rez.Add(i->coef * j->coef, i->deg + j->deg);
+			j = j->next;
+		}
+		i = i->next;
+	}
+	rez.Sort();
+	return rez;
+}
+
+Polinom Polinom::Multiply(double coef, int deg)
+{
+	Polinom rez;
+	Monom* i = head;
+
+	while (i)
+	{
+		rez.Add(i->coef * coef, i->deg + deg);
+	}
+	rez.Sort();
+	return rez;
+}
+
+Polinom Polinom::operator*(double a)
+{
+	Polinom rez(*this);
+	Monom * i = rez.head;
+	while (i)
+	{
+		i->coef = i->coef * a;
+		i = i->next;
+	}
+	return rez;
+}
+
+Polinom Polinom::operator/(double a)
+{
+	Polinom rez(*this);
+	Monom * i = rez.head;
+	while (i)
+	{
+		i->coef = i->coef / a;
+		i = i->next;
+	}
+	return rez;
+}
+
+Polinom Polinom::operator/(Polinom poli)
+{
+	Polinom rez;
+	Polinom delimoe(*this); //Делимое
+	Polinom chast;			//Целая часть частного
+	//Polinom ost = *this;	//Остаток
+	if (poli == 0) 
+	{
+		cout << "Ошибка: Деление на ноль. Возвращено делимое";
+		return *this;
+	}
+	if (poli.Count = 1)
+	{
+		return((*this) / poli.head->coef);
+	}
+
+	Sort();
+	poli.Sort;
+	Monom * i = head;
+	Monom * j = poli.head;
+
+	while ((j->deg) < (i->deg))
+	{
+		chast = poli.Multiply(1, i->deg - j->deg);
+		delimoe = delimoe - chast;
+		i = delimoe.head;
+		rez = rez + chast;
+
+	}
+	
 
 	return rez;
+}
+
+
+Polinom Polinom::operator%(Polinom poli)
+{
+	Polinom rez;
+	Polinom delimoe(*this); //Делимое
+	Polinom chast;			//Целая часть частного
+	//Polinom ost = *this;	//Остаток
+	if (poli == 0)
+	{
+		cout << "Ошибка: Деление на ноль. Возвращено делимое";
+		return *this;
+	}
+	if (poli.Count = 1)
+	{
+		return((*this) / poli.head->coef);
+	}
+
+	Sort();
+	poli.Sort;
+	Monom * i = head;
+	Monom * j = poli.head;
+
+	while ((j->deg) < (i->deg))
+	{
+		chast = poli.Multiply(1, i->deg - j->deg);
+		delimoe = delimoe - chast;
+		i = delimoe.head;
+
+	}
+
+
+	return delimoe;
+}
+
+Polinom& Polinom::operator=(const Polinom& poli)
+{
+	Polinom rez(poli);
+	return(rez);
+}
+
+bool Polinom::operator==(double a)
+{
+	if ((Count() != 1)&& (head->deg != 0)&&(head->coef != a))return false;
+	else return true;
+}
+
+int Polinom::Count()
+{
+	Monom* i = head;
+	int count = 0;
+	while (i)
+	{
+		count++;
+		i = i->next;
+	}
 }
 
 void Polinom::DeleteAll()
@@ -134,6 +306,7 @@ void Polinom::DeleteAll()
 		delete del;
 		del = i;
 	}
+	head = 0;
 }
 
 void Polinom::Output()
