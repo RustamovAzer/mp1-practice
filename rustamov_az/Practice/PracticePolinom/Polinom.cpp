@@ -1,6 +1,6 @@
 #include "Polinom.h"
-
-
+#include <iostream>
+using namespace std;
 
 Polinom::Polinom()
 {
@@ -60,6 +60,37 @@ void Polinom::Add(double coef, int deg)
 
 void Polinom::Sort()
 {
+	Monom* a = head;
+	int num = 0;
+	do
+	{
+		num++;
+		a = a->next;
+	} while (a);
+	a = head;
+	int* arrdeg = new int(num);
+	double* arrcoef = new double(num);
+	for (int i; i<num ; i++)
+	{
+		arrdeg[i] = a->deg;
+		arrcoef[i] = a->coef;
+	}
+
+	int key = 0, keycoef = 0;
+	int i = 0;
+	for (int j = 1; j<num; j++) {
+		key = arrdeg[j];
+		keycoef = arrcoef[j];
+		i = j - 1;
+		while (i >= 0 && arrdeg[i]>key) {
+			arrdeg[i + 1] = arrdeg[i];
+			arrcoef[i + 1] = arrcoef[i];
+			i = i - 1;
+			arrdeg[i + 1] = key;
+			arrcoef[i + 1] = keycoef;
+		}
+	}
+
 
 }
 
@@ -82,7 +113,14 @@ Polinom Polinom::operator+(Polinom poli)
 		a = a->next;
 
 	} while (a);
-	//Отсортировать
+	rez.Sort();
+	return rez;
+}
+
+Polinom Polinom::operator*(Polinom a)
+{
+	Polinom rez();
+
 	return rez;
 }
 
@@ -95,5 +133,15 @@ void Polinom::DeleteAll()
 		i = i->next;
 		delete del;
 		del = i;
+	}
+}
+
+void Polinom::Output()
+{
+	if (!head) cout << "0\n";
+	for (Monom* i = head; i; i = i->next)
+	{
+		if ((i->coef > 0) && (i != head)) cout << "-";
+		cout << i->coef << "x^" << i->deg;
 	}
 }

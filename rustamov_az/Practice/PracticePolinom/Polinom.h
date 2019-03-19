@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 class Polinom
 {
 	Monom* head;
@@ -9,8 +10,10 @@ public:
 	void Add(double coef, int deg);
 	void Sort();
 	void DeleteAll();
+	void Output();
 	~Polinom();
 	Polinom operator+(Polinom a);
+	Polinom operator*(Polinom a);
 };
 
 struct Monom
