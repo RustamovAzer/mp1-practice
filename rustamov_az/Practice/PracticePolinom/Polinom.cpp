@@ -27,7 +27,7 @@ Monom::Monom(int _deg, double _coef)
 	next = nullptr;
 }
 
-Monom Monom::operator+(Monom & mono)
+Monom Monom::operator+(const Monom & mono)
 {
 	Monom tmp;
 	tmp.next = next;
@@ -35,11 +35,18 @@ Monom Monom::operator+(Monom & mono)
 	return tmp;
 }
 
-Monom Monom::operator*(Monom & mono)
+Monom Monom::operator*(const Monom & mono)
 {
 	Monom tmp;
 	tmp.coef = coef * mono.coef;
 	tmp.deg = deg * mono.deg;
+	return tmp;
+}
+
+Monom Monom::operator*(const double _coef)
+{
+	Monom tmp;
+	tmp.coef = coef * _coef;
 	return tmp;
 }
 
@@ -58,12 +65,29 @@ Monom& Monom::operator/(Monom & mono)
 	return *tmp;
 }
 
+Monom& Monom::operator/(const double _coef)
+{
+	Monom* tmp = new Monom(*this);
+	tmp->coef = coef / _coef;
+	return *tmp;
+}
+
 Monom Monom::operator-()
 {
 	coef = -coef;
 	return Monom();
 }
+bool Monom::operator== (const Monom&  x)
+{
+	if ((x.coef == coef) && (x.deg == deg))return true;
+	else return false;
+}
 
+bool Monom::operator!= (const Monom&  x)
+{
+	if ((x.coef != coef) && (x.deg != deg))return true;
+	else return false;
+}
 void Monom::OutputMonom()
 {
 	if (deg == 0)
@@ -84,6 +108,247 @@ Polinom::~Polinom()
 	DeleteAll();
 }
 
+Polinom & Polinom::operator+(const double _coef)
+{
+	Polinom* tmp = new Polinom();
+	Monom* mon = new Monom(0, _coef);
+	tmp->Add(*mon);
+	return *tmp;
+
+}
+
+Polinom & Polinom::operator+(const Monom & b)
+{
+		Polinom* tmp = new Polinom();
+		tmp->Add(b);
+		return *tmp;
+
+}
+
+Polinom & Polinom::operator+(const Polinom & b)
+{
+	if (!head)
+		return *this;
+	else
+	{
+		Polinom* tmp = new Polinom(*this);
+		for (Monom* i = b.head; i; i = i->next)
+		{
+			Monom* tm = tmp->Search(i->deg);
+			if (tm)
+			{
+				tm->coef += i->coef;
+			}
+			else
+			{
+				tmp->Add(*i);
+			}
+		}
+		RemoveNulls();
+		CombineSameDegs();
+		return *tmp;
+	}
+
+}
+
+Polinom & Polinom::operator-(const Polinom & b)
+{
+	if (!head)
+		return *this;
+	else
+	{
+		Polinom* tmp = new Polinom(*this);
+		for (Monom* i = b.head; i; i = i->next)
+		{
+			Monom* tm = tmp->Search(i->deg);
+			if (tm)
+			{
+				tm->coef -= i->coef;
+			}
+			else
+			{
+				tmp->Sub(*i);
+			}
+		}
+		RemoveNulls();
+		return *tmp;
+	}
+}
+
+Polinom & Polinom::operator-(double d)
+{
+	Polinom* tmp = new Polinom(*this);
+	Monom* mono = new Monom(0, d);
+	tmp->Sub(*mono);
+	tmp->CombineSameDegs();
+	return(*tmp);
+}
+
+Polinom & Polinom::operator-(const Monom & m)
+{
+	Polinom* tmp = new Polinom(*this);
+	tmp->Sub(m);
+	tmp->CombineSameDegs();
+	return(*tmp);
+}
+
+Polinom & Polinom::operator/(const double _coef)
+{
+	if (!head)
+		return *this;
+	else
+	{
+		Polinom* tmp = new Polinom(*this);
+		for (Monom* i = tmp->head; i; i = i->next)
+		{
+			*i = *i / _coef;
+		}
+		return *tmp;
+	}
+}
+
+Polinom & Polinom::operator/(Monom& b)
+{
+	if (!head)
+		return *this;
+	else
+	{
+		Polinom* tmp = new Polinom(*this);
+		for (Monom* i = tmp->head; i; i = i->next)
+		{
+			*i = *i / b;
+		}
+		return *tmp;
+	}
+}
+Polinom& Polinom::operator/(Polinom& divider)
+{
+
+	Polinom* rez = new Polinom();
+	Polinom* dividend = new Polinom(*this);//Делимое
+	Polinom quotient; //Частное
+	Monom* a = divider.head;
+	if (a->next == nullptr)
+	{
+		*rez = *this / *a;
+		return *rez;
+	}
+
+	Monom* div = new Monom(*head);
+	Monom* max_deg_dividend = dividend->SearchMax();
+	Monom* max_deg_div = divider.SearchMax();
+	if (max_deg_dividend->deg < max_deg_div->deg)
+	{
+		rez->Add(0, 0);
+		return *rez;
+	}
+	while (max_deg_dividend->deg >= max_deg_div->deg)
+	{
+		Monom tmp = *max_deg_dividend / *max_deg_div;
+		rez->Add(tmp);
+		*dividend = *dividend - (divider * tmp);
+		max_deg_dividend = dividend->SearchMax();
+		if (max_deg_dividend == nullptr)
+			break;
+	}
+	return *rez;
+}
+
+
+
+Polinom & Polinom::operator*(double b)
+{
+	Monom* i;
+	for (i = head; i; i = i->next)
+	{
+		i->coef = i->coef * b;
+	}
+	return *this;
+}
+
+Polinom & Polinom::operator*(const Polinom & b)
+{
+	Monom* i, *k;
+	if (!b.head)
+	{
+		Polinom* tmp = new Polinom(*this);
+		return *tmp;
+	}
+	Polinom* tmp = new Polinom();
+	for (i = head; i; i = i->next)
+	{
+		for (k = b.head; k; k = k->next)
+		{
+			tmp->Add((*i) * (*k));
+		}
+	}
+	tmp->RemoveNulls();
+	return *tmp;
+}
+
+Polinom & Polinom::operator*(const Monom & mono)
+{
+	if (!head)
+		return *this;
+	Polinom* tmp = new Polinom(*this);
+	for (Monom* i = tmp->head; i; i = i->next)
+	{
+		i->coef *= mono.coef;
+		i->deg += mono.deg;
+	}
+	return *tmp;
+}
+
+Polinom & Polinom::operator=(Polinom & x)
+{
+	if (x == *this)return *this;
+	DeleteAll();
+	for (Monom* i = x.head; i; i = i->next)
+	{
+		Add(*i);
+	}
+	return *this;
+}
+
+bool Polinom::operator==(Polinom & x) 
+{
+	Sort();
+	x.Sort();
+	Monom* i = head;
+	Monom* j = x.head;
+	bool rez = true;
+	do
+	{
+		if ((*i) != (*j)) 
+		{
+			rez = false;
+			return rez;
+		}
+		i = i->next;
+		j = j->next;
+	} while ((i) && (j));
+
+}
+
+bool Polinom::operator!=(Polinom & x)
+{
+	Sort();
+	x.Sort();
+	Monom* i = head;
+	Monom* j = x.head;
+	bool rez = false;
+	do
+	{
+		if ((*i) != (*j))
+		{
+			rez = true;
+			return rez;
+		}
+		i = i->next;
+		j = j->next;
+	} while ((i) && (j));
+
+}
 void Polinom::DeleteAll()
 {
 	Monom* i = head;
@@ -120,7 +385,7 @@ void Polinom::Add(Monom b)
 	CombineSameDegs();
 }
 
-void Polinom::_Add(Monom mono)
+void Polinom::Sub(Monom mono)
 {
 	Monom* i;
 	if (!head) head = new Monom(-mono);
@@ -228,124 +493,6 @@ void Polinom::RemoveMonom(Monom* k)
 	}
 }
 
-Polinom & Polinom::operator+(Polinom & b)
-{
-	if (!head)
-		return *this;
-	else
-	{
-		Polinom* tmp = new Polinom(*this);
-		for (Monom* i = b.head; i; i = i->next)
-		{
-			Monom* tm = tmp->Search(i->deg);
-			if (tm)
-			{
-				tm->coef += i->coef;
-			}
-			else
-			{
-				tmp->Add(*i);
-			}
-		}
-		RemoveNulls();
-		CombineSameDegs();
-		return *tmp;
-	}
-
-}
-
-Polinom & Polinom::operator/(Monom& b)
-{
-	if (!head)
-		return *this;
-	else
-	{
-		Polinom* tmp = new Polinom(*this);
-		for (Monom* i = tmp->head; i; i = i->next)
-		{
-			*i = *i / b;
-		}
-		return *tmp;
-	}
-}
-
-Polinom & Polinom::operator-(Polinom & b)
-{
-	if (!head)
-		return *this;
-	else
-	{
-		Polinom* tmp = new Polinom(*this);
-		for (Monom* i = b.head; i; i = i->next)
-		{
-			Monom* tm = tmp->Search(i->deg);
-			if (tm)
-			{
-				tm->coef -= i->coef;
-			}
-			else
-			{
-				tmp->_Add(*i);
-			}
-		}
-		RemoveNulls();
-		return *tmp;
-	}
-}
-
-Polinom & Polinom::operator*(double b)
-{
-	Monom* i;
-	for (i = head; i; i = i->next)
-	{
-		i->coef = i->coef * b;
-	}
-	return *this;
-}
-
-Polinom & Polinom::operator*(Polinom & b)
-{
-	Monom* i, *k;
-	if (!b.head)
-	{
-		Polinom* tmp = new Polinom(*this);
-		return *tmp;
-	}
-	Polinom* tmp = new Polinom();
-	for (i = head; i; i = i->next)
-	{
-		for (k = b.head; k; k = k->next)
-		{
-			tmp->Add((*i) * (*k));
-		}
-	}
-	tmp->RemoveNulls();
-	return *tmp;
-}
-
-Polinom & Polinom::operator*(Monom & mono)
-{
-	if (!head)
-		return *this;
-	Polinom* tmp = new Polinom(*this);
-	for (Monom* i = tmp->head; i; i = i->next)
-	{
-		i->coef *= mono.coef;
-		i->deg += mono.deg;
-	}
-	return *tmp;
-}
-
-Polinom & Polinom::operator=(Polinom & x)
-{
-	DeleteAll();
-	for (Monom* i = x.head; i; i = i->next)
-	{
-		Add(*i);
-	}
-	return *this;
-}
-
 Monom* Polinom::Search(int _degr, Monom* start)
 {
 	if (!head)
@@ -448,7 +595,6 @@ void Polinom::Sort()
 	if (!head->next)
 		return;
 	Monom* max = SearchMax();
-	//max->OutputMonom();
 	PlaceBefore(max, head);
 	for (Monom* i = head->next; i; i = i->next)
 	{
@@ -460,38 +606,3 @@ void Polinom::Sort()
 	}
 }
 
-Polinom& Polinom::operator/(Polinom& divider)
-{
-	/*Polinom* rez = new Polinom();
-	if (!head)
-		return *this;
-	*/
-	Polinom* rez = new Polinom();
-	Polinom* dividend = new Polinom(*this);//Делимое
-	Polinom quotient; //Частное
-	Monom* a = divider.head;
-	if (a->next == nullptr)
-	{
-		*rez = *this / *a;
-		return *rez;
-	}
-	
-	Monom* div = new Monom(*head);
-	Monom* max_deg_dividend = dividend->SearchMax();
-	Monom* max_deg_div = divider.SearchMax();
-	if (max_deg_dividend->deg < max_deg_div->deg)
-	{
-		rez->Add(0, 0);
-		return *rez;
-	}
-	while (max_deg_dividend->deg >= max_deg_div->deg)
-	{
-		Monom tmp = *max_deg_dividend / *max_deg_div;
-		rez->Add(tmp);
-		*dividend = *dividend - (divider * tmp);
-		max_deg_dividend = dividend->SearchMax();
-		if (max_deg_dividend == nullptr)
-			break;
-	}
-	return *rez;
-}
