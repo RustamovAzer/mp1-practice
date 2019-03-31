@@ -1,7 +1,6 @@
 
 #include "Vector.h"
 
-
 typedef struct
 {
 	int deg;

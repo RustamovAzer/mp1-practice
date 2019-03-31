@@ -1,9 +1,9 @@
 #ifndef __Vetor.H
 #define __Vector.H
-#include <stdio.h>
-#include <stdlib.h>
-#include <locale.h>
-#include <math.h>
+#include <cstdio>
+#include <cstdlib>
+#include <clocale>
+#include <cmath>
 #define PI 3.1415926535
 typedef struct
 {
