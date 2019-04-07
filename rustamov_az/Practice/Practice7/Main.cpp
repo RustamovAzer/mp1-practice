@@ -1,36 +1,38 @@
 #pragma once
 #include "Nvector.h"
 #include <iostream>
+#include <locale.h>
 using namespace std;
 
 
 void main()
 {
+    setlocale(LC_ALL, "Russian");
     double a1[5] = { 1, 2, 3, 4, 5 }, 
         a2[5] = { 3, 1, 4, 1, 5 }, 
         a3[3] = { 1, -3, -1 };
 
     try
     {
-        Nvector v1(5, a1), v2(5, a2), v3(3, a3), v4(3);
+        Nvector v1(5, a1), v2(5, a2), v3(3, a3);
         cout << "Вектор v1 = " << v1 << endl;
         cout << "Вектор v2 = " << v2 << endl;
         cout << "Вектор v3 = " << v3 << endl;
-        cout << "Вектор v4 = " << v2 << endl << endl;
+
 
         cout << "Длина v1 = " << v1.Length() << endl;
         cout << "Длина v2 = " << v2.Length() << endl;
-        cout << "Длина v3 = " << v1.Length() << endl;
-        cout << "Длина v4 = " << v2.Length() << endl;
+        cout << "Длина v3 = " << v3.Length() << endl;
+
 
         cout << "v1 + v2 = " << v1 + v2 << endl;
         cout << "v1 - v2 = " << v1 - v2 << endl;
         cout << "v1 * v2 = " << v1 * v2 << endl << endl;
-
+        
         cout << "v1 + 5 = " << v1 + 5 << endl;
         cout << "v1 - 3 = " << v1 - 3 << endl;
         cout << "v1 * 8 = " << v1 * 8 << endl << endl;
-
+        
         cout << "v1[5] = " << v1[5] << endl << endl;
         cout << "v2[2] = " << v2[2] << endl << endl;
         cout << "v2[2] + 2 " << v2[2] + 2 << endl << endl;

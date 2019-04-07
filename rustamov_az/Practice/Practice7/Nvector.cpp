@@ -3,6 +3,7 @@
 
 Nvector::Nvector(int _dim)
 {
+    if (dim <= 0) throw 0;
     dim = _dim;
     v = new double(dim);
     for (int i = 0; i < dim; i++)
@@ -72,12 +73,12 @@ Nvector Nvector::operator+(const Nvector& b)
 
 Nvector Nvector::operator+(const double d)
 {
-    Nvector temp(dim);
+    Nvector res(dim);
     for (int i = 0; i < dim; i++)
     {
-        temp.v[i] = v[i] + d;
+        res.v[i] = v[i] + d;
     }
-    return temp;
+    return res;
 }
 
 Nvector Nvector::operator-(const Nvector& _x)
@@ -221,7 +222,7 @@ Nvector Nvector::operator*=(const double d)
 }
  void Nvector::operator delete(void *p) 
  {
-     free(p);
+     delete p;
  }
 
  void* Nvector::operator new[](size_t v)
@@ -234,7 +235,7 @@ Nvector Nvector::operator*=(const double d)
 
 void Nvector::operator delete[](void* v)
  {
-     free(v);
+     delete[] v;
  }
 void Nvector::Print()
  {

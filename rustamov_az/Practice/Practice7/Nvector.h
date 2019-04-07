@@ -15,6 +15,7 @@ public:
     Nvector(int _size, double * _v);
     ~Nvector();
 
+    Nvector & operator=(const Nvector & _x);
     Nvector operator+(const Nvector & b);
     Nvector operator+(const double b);
     Nvector operator-(const Nvector & _x);
