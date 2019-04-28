@@ -30,14 +30,27 @@ public:
 	const time operator=(const time&);
 
 	friend std::ostream& operator<<(std::ostream&, const time&);
-	friend std::ofstream& operator<<(std::ofstream&, const time&);
+};
+
+class bad_time_hour : std::exception
+{
+	const std::string what_str = "Некорректный час.";
+public:
+	const char* what() const;
+};
+
+class bad_time_min : std::exception
+{
+	const std::string what_str = "Некорректные минуты.";
+public:
+	const char* what() const;
 };
 
 class bad_time : std::exception
 {
-	const std::string what_str = "Некоректное время.";
+	const std::string what_str = "Время начала больше времени конца.";
 public:
-	const char* what(char) const;
+	const char* what() const;
 };
 
 #endif 
