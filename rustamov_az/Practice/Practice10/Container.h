@@ -10,7 +10,7 @@ class Container
     
 public:
     Container();
-    Container(const Contaner& x);
+    Container(const Contaner<typename T, int maxsize>& x);
     ~Container();
 
     bool IsFull() const; 
@@ -24,7 +24,7 @@ public:
     int Find(const T& x) const;
 };
 
-template<typename T, unsigned maxsize>
+template<typename T, int maxsize>
  Container<T, maxsize>::Container()
 {
     arr = new T[maxsize];
@@ -91,12 +91,12 @@ template<typename T, int maxsize>
     idx = Find(a);
     if (arr[idx] == arr[count - 1])
     {
-        delete arr[count - 1];
+        //delete arr[count - 1];
         count--;
         return;
     }
     arr[idx] = arr[count - 1];
-    delete arr[count - 1];
+    //delete arr[count - 1];
     count--;
     return;
 }
@@ -139,7 +139,7 @@ Container<T*, maxsize>::Container(const Contaner<T*, maxsize> & x)
         *arr[i] = *x.arr[i];
     }
 }
-template<typename T, unsigned maxsize>
+template<typename T, int maxsize>
 Container<T*, maxsize>::Container()
 {
     arr = new T*[maxsize];
