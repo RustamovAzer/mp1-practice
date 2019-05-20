@@ -111,6 +111,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Container.h" />
+    <ClInclude Include="Exceptions.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />

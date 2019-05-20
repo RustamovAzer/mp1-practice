@@ -6,15 +6,17 @@ using namespace std;
 
 class Passport
 {
-    long s;   //Серия
-    long num;   //Номер
-    string WhoGP;   //Кем выдан
-    Date dOfGP;    //Когда выдан
-    Date dOfBirth;    //Дата рождения
-    Place pofP;    //Место прописки
+    bool ns;      //Пол
+    long s;       //Серия
+    long num;     //Номер
+    string WhoGP; //Кем выдан
+    Date dOfGP;   //Когда выдан
+    Date dOfBirth;//Дата рождения
+    Place pofP;   //Место прописки
 
 public:
     Passport();
     ~Passport();
+    //TODO: Чтение из файла
 };
 
