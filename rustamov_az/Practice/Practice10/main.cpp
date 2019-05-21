@@ -1,73 +1,104 @@
-#include "Container.h"
-#include <iostream>
+#include "Container.h" 
+#include "Exceptions.h" 
 
-int main()
+void main()
 {
-    using namespace std;
-    Container<double, 15> C1;
-    C1.Add(5.9); //Добавление элемента
+    int arr1[5] = { 1, 2, 4, 7, 8 };
+    double arr2[7] = { 1.1, 2.2, 3.3, 4.4, 5.5, 6.6, 7.7 };
 
-    unsigned f1 = C1.Find(5.9); //Поиск элемента
-    cout << f1 << endl; 
-    
-    Container<double, 15> C3;
-    C3.IsEmpty; //Проверка на пустоту контейнера
-    
-    Container<double, 2> C5; 
-    C5.Add(1.2);
-    C5.Add(5.41);
-    Container<double, 2> C5c(C5);
-
-    C5.IsFull; //Проверка на заполненность контейнера
-    C5.Delete(1.2); //Удаление элемента
-    C5.IsFull; 
-    cout << C5[0] << endl; //Индексация
-
-    //Контейнер указателей
-    Container<int*, 10> C2p;
-    int a = 60, b = 59;
-    int* x = &a, *y = &b;
-
-    for (int i = 0; i < 10; i++)
+    Container<int, 5> Cont1(arr1, 5);
+    Container<double, 7> Cont2(arr2, 7);
+    try
     {
-        C2p.Add(x); //Добавление элемента
+        cout << "the contents of the container1: " << Cont1 << endl;
+        cout << "the contents of the container2: " << Cont2 << endl;
     }
-    C2p.IsEmpty; //Проверка на пустоту контейнера
-    C2p.IsFull; //Проверка на полноту контейнера
-    C2p.Delete(x); //Удаление элемента
-    C2p.IsFull;
-    C2p.Find(y);//Поиск элемента
-
-    //Исключения
+    catch (Exception e)
+    {
+        e.Print();
+    }
 
     try
     {
-        Container<int, 3> C4;
-        C4.Delete(2); //Удаление элемента из пустого контейнера
-        C4.Add(1);
-        C4.Add(1);
-        C4.Add(1);
+        Cont1.Delete(2);
+        cout << "Container 1 - num 2: " << Cont1 << endl;
 
-        C4.Add(1); //Добавление элемента в полный контейнер
-
-
-        Container<double*, 3> C5;
-        double el = 0.1;
-        double* pt = &el;
-
-        C5.Delete(pt); //Удаление элемента из пустого контейнера(указатель)
-       
-        C5.Add(pt);
-        C5.Add(pt);
-        C5.Add(pt);
-        
-        C5.Add(pt);//Добавление элемента в полный контейнер(указатель)
-
-
+        Cont2.Delete(2.2);
+        cout << "Container 2 - num 2.2: " << Cont2 << endl;
     }
-    catch (char* ex)
+    catch (Exception e)
     {
-        cout << ex << endl;
+        e.Print();
     }
-    
+
+    try
+    {
+        Cont1.Add(3);
+        cout << "Container 1 + num 3: " << Cont1 << endl;
+
+        Cont2.Add(9.9);
+        cout << "Container 2 + num 9.9: " << Cont2 << endl;
+
+    }
+    catch (Exception e)
+    {
+        e.Print();
+    }
+
+    int *arr11[5];
+    double *arr22[7];
+
+    for (int i = 0; i < 5; i++)
+        arr11[i] = &arr1[i];
+
+    for (int i = 0; i < 7; i++)
+        arr22[i] = &arr2[i];
+
+    Container<int*, 10> Cont11(arr11, 5);
+    Container<double*, 10> Cont22(arr22, 7);
+    try
+    {
+        cout << "the contents of the container1`: " << Cont11 << endl;
+        cout << "the contents of the container2`: " << Cont22 << endl;
+    }
+    catch (Exception e)
+    {
+        e.Print();
+    }
+
+    try
+    {
+        double a = 1.1;
+        double *a1 = &a;
+
+        Cont22.Add(a1);
+        cout << "Container 2` + num 1.1: " << Cont22 << endl;
+
+        int b = 1;
+        int *b1 = &b;
+        Cont11.Add(b1);
+        cout << "Container 1` + num 1: " << Cont11 << endl;
+    }
+    catch (Exception e)
+    {
+        e.Print();
+    }
+    try
+    {
+        int b = 2;
+        int *b1 = &b;
+
+        Cont11.Delete(b1);
+        cout << "Container 1` - num 2: " << Cont11 << endl;
+
+        double a = 2.2;
+        double *a1 = &a;
+
+        Cont22.Delete(a1);
+        cout << "Container 2` - num 2.2: " << Cont22 << endl;
+    }
+    catch (Exception e)
+    {
+        e.Print();
+    }
 }
