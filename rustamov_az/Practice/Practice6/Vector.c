@@ -1,33 +1,38 @@
 
 #include "Vector.h"
 
-typedef struct
+void Print(Vector *v)
 {
-	int deg;
-	double* x;
-}Vector;
-
+    int i;
+    for (i = 0; i < v->deg; i++)
+        printf("%lf ", v->x[i]);
+    printf("\n");
+}
 Vector* CreateV(int _deg)
 {
-	Vector* tmp = (Vector*)malloc(sizeof(Vector)*_deg);
-	return tmp;
+	Vector* res = (Vector*)malloc(sizeof(Vector));
+    res->deg = _deg;
+    res->x = (double*)malloc(sizeof(double) * _deg);
+	return res;
 }
 
 void DestroyV(Vector *a)
 {
-	a->deg = 0;
-	free(a->x);
+    if (a->deg && a->x) free(a->x);
+    a->deg = 0;
+    a->x = NULL;
 }
 
 Vector Sum(Vector *a, Vector *b)
 {
-	Vector* tmp = (Vector*)malloc(sizeof(Vector)*a->deg);
-	int i = 0;
-	if (a->deg != b->deg)
+    int i = 0;
+	if ((a->deg) != (b->deg))
 	{
 		printf("Размерности векторов не совпадают");
 		return *a;
 	}
+    Vector* tmp;
+    tmp = CreateV(a->deg);
 	for (i; i < a->deg; i++)
 	{
 		tmp->x[i] = a->x[i] + b->x[i];
@@ -37,13 +42,14 @@ Vector Sum(Vector *a, Vector *b)
 
 Vector Diff(Vector *a, Vector *b)
 {
-	Vector* tmp = (Vector*)malloc(sizeof(Vector)*a->deg);
 	int i = 0;
 	if (a->deg != b->deg)
 	{
 		printf("Размерности векторов не совпадают");
 		return *a;
 	}
+    Vector* tmp;
+    tmp = CreateV(a->deg);
 	for (i; i < a->deg; i++)
 	{
 		tmp->x[i] = a->x[i] - b->x[i];
@@ -60,7 +66,7 @@ double Length(Vector *a)
 	{
 		l += a->x[i] * a->x[i];
 	}
-	return l;
+	return sqrt(l);
 }
 
 double Skal(Vector *a, Vector *b)
