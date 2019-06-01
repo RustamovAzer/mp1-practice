@@ -140,8 +140,7 @@ const Matrix& Matrix::operator=(const Matrix& _m)
 {
     if ((rows == _m.rows) && (cols == _m.cols) && (m == _m.m))
         return *this;
-    if (rows ^ _m.rows ^ cols ^ _m.cols) // сравним все хором
-        delete[] m;
+    delete[] m;
     rows = _m.rows;
     cols = _m.cols;
     unsigned elements = rows * cols;

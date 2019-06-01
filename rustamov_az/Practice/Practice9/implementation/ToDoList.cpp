@@ -105,12 +105,12 @@ short ToDoList::read_tasks()
 			}
 			catch (bad_time_hour& e)
 			{
-				std::cout << e.what()  << " Исправьте в файле строку " << i + 2 << '.';
+				std::cout << e.what()  << " Неверная строчка: " << i + 2 << '.';
 				return -1;
 			}
 			catch (bad_time_min& e)
 			{
-				std::cout << e.what() << " Исправьте в файле строку " << i + 2 << '.';
+				std::cout << e.what() << " Неверная строчка: " << i + 2 << '.';
 				return -1;
 			}
 			if (_start > _end)
