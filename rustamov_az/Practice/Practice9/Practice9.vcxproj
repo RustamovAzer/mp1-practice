@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Date.cpp" />
     <ClCompile Include="implementation\Date.cpp" />
     <ClCompile Include="implementation\Task.cpp" />
     <ClCompile Include="implementation\TaskDay.cpp" />
@@ -158,15 +159,25 @@
     <ClCompile Include="implementation\Time.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="implementation\\ToDoList.cpp" />
+    <ClCompile Include="Task.cpp" />
+    <ClCompile Include="TaskDay.cpp" />
+    <ClCompile Include="TaskStd.cpp" />
+    <ClCompile Include="Time.cpp" />
+    <ClCompile Include="ToDoList.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Headers.h" />
+    <ClInclude Include="Date.h" />
     <ClInclude Include="headers\Date.h" />
     <ClInclude Include="headers\Task.h" />
     <ClInclude Include="headers\TaskDay.h" />
     <ClInclude Include="headers\TaskStd.h" />
     <ClInclude Include="headers\Time.h" />
     <ClInclude Include="headers\ToDoList.h" />
+    <ClInclude Include="Task.h" />
+    <ClInclude Include="TaskDay.h" />
+    <ClInclude Include="TaskStd.h" />
+    <ClInclude Include="Time.h" />
+    <ClInclude Include="ToDoList.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

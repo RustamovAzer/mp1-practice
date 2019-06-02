@@ -1,16 +1,16 @@
-﻿#include "../headers/TaskDay.h"
+﻿#include "TaskDay.h"
 
 taskday::taskday() : task()
 {
 	get_type(1);
 	description = "";
-	//set_id(0);
+	
 }
 
 taskday::taskday(taskday& x) : task(x)
 {
 	 get_type(x.set_type());
-	 //set_id(x.get_id);
+
 	 description = x.description;
 }
 

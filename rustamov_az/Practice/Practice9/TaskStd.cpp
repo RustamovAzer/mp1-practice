@@ -1,4 +1,4 @@
-﻿#include "../headers/TaskStd.h"
+﻿#include "TaskStd.h"
 
 taskstd::taskstd() : task()
 {
