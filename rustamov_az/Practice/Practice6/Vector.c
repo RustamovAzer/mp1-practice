@@ -11,8 +11,8 @@ void Print(Vector *v)
 Vector* CreateV(int _deg)
 {
 	Vector* res = (Vector*)malloc(sizeof(Vector));
-    	res->deg = _deg;
-    	res->x = (double*)malloc(sizeof(double) * _deg);
+    res->deg = _deg;
+    res->x = (double*)malloc(sizeof(double) * _deg);
 	return res;
 }
 
