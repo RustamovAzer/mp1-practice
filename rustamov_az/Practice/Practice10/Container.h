@@ -22,8 +22,8 @@ public:
     void Add(T a);
     void Delete(T a);
     void Delete1(int);
-    T& operator[](int); //на запись
-    const T& operator[](int) const; //на чтение
+    T& operator[](int);
+    const T& operator[](int) const; 
     friend std::ostream& operator << (std::ostream & o, const Container& x)
     {
         for (int i = 0; i < x.n; i++)
@@ -52,7 +52,7 @@ Container <T, maxsize>::Container()
 template <typename T, int maxsize>
 Container <T, maxsize>::Container(const Container <T, maxsize> &c)
 {
-    //Конструктор копирования 
+    
     n = c.n;
     arr = new T[maxsize];
     for (int i = 0; i < n; i++)
@@ -100,7 +100,7 @@ int Container <T, maxsize>::Find(T a) const
 template <typename T, int maxsize>
 void Container <T, maxsize>::Add(T a)
 {
-    if (isFull()) //Проверка на полноту 
+    if (isFull()) 
     {
         throw ContainerIsFullExeption();
     }
@@ -111,24 +111,24 @@ void Container <T, maxsize>::Add(T a)
 template <typename T, int maxsize>
 void Container <T, maxsize>::Delete1(int idx)
 {
-    if (isEmpty()) //Проверка на пустоту 
+    if (isEmpty()) 
     {
         throw ContainerIsEmptyExeption();
     }
-    arr[idx] = arr[n - 1]; //Замена найденного элемента на последний
+    arr[idx] = arr[n - 1]; 
     n--;
 };
 
 template <typename T, int maxsize>
 void Container <T, maxsize>::Delete(T a)
 {
-    Delete1(Find(a)); //Удаление опредленного элемента 
+    Delete1(Find(a)); 
 }
 
 template<typename T, int maxsize>
 T& Container<T, maxsize>::operator[](int i)
 {
-    if ((i > maxsize) || (i < 0)) //Проверка на выход за границы 
+    if ((i > maxsize) || (i < 0))
     {
         throw ContainerOutOfBoundsExeption();
     }
@@ -145,7 +145,7 @@ const T& Container<T, maxsize>::operator[](int i) const
     return arr[i];
 };
 
-//Специализация 
+
 template <typename T, int maxsize>
 class Container <T*, maxsize>
 {
@@ -163,7 +163,7 @@ public:
     void Add(T* a);
     void Delete1(T* a);
     T*& operator[](int);
-    const T* operator[](int) const;
+    const T*& operator[](int) const;
 
     friend std::ostream& operator << (std::ostream & o, const Container& x)
     {
@@ -275,7 +275,7 @@ T*& Container<T*, maxsize>::operator[](int i)
 };
 
 template<typename T, int maxsize>
-const T* Container<T*, maxsize>::operator[](int i) const
+const T*& Container<T*, maxsize>::operator[](int i) const
 {
     if ((i > maxsize) || (i < 0))
     {
