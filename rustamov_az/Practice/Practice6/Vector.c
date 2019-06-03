@@ -11,8 +11,8 @@ void Print(Vector *v)
 Vector* CreateV(int _deg)
 {
 	Vector* res = (Vector*)malloc(sizeof(Vector));
-    res->deg = _deg;
-    res->x = (double*)malloc(sizeof(double) * _deg);
+    	res->deg = _deg;
+    	res->x = (double*)malloc(sizeof(double) * _deg);
 	return res;
 }
 
@@ -28,7 +28,7 @@ Vector Sum(Vector *a, Vector *b)
     int i = 0;
 	if ((a->deg) != (b->deg))
 	{
-		printf("Размерности векторов не совпадают");
+		printf("ГђГ Г§Г¬ГҐГ°Г­Г®Г±ГІГЁ ГўГҐГЄГІГ®Г°Г®Гў Г­ГҐ Г±Г®ГўГЇГ Г¤Г ГѕГІ");
 		return *a;
 	}
     Vector* tmp;
@@ -45,7 +45,7 @@ Vector Diff(Vector *a, Vector *b)
 	int i = 0;
 	if (a->deg != b->deg)
 	{
-		printf("Размерности векторов не совпадают");
+		printf("ГђГ Г§Г¬ГҐГ°Г­Г®Г±ГІГЁ ГўГҐГЄГІГ®Г°Г®Гў Г­ГҐ Г±Г®ГўГЇГ Г¤Г ГѕГІ");
 		return *a;
 	}
     Vector* tmp;
@@ -74,7 +74,7 @@ double Skal(Vector *a, Vector *b)
 	double skal = 0.0;
 	if (a->deg != b->deg)
 	{
-		printf("Размерности векторов не совпадают");
+		printf("ГђГ Г§Г¬ГҐГ°Г­Г®Г±ГІГЁ ГўГҐГЄГІГ®Г°Г®Гў Г­ГҐ Г±Г®ГўГЇГ Г¤Г ГѕГІ");
 		return 0.0;
 	}
 	int i = 0;
@@ -89,7 +89,7 @@ double Angle(Vector *a, Vector *b)
 	double ang, la, lb, skal;
 	if (a->deg != b->deg)
 	{
-		printf("Размерности векторов не совпадают");
+		printf("ГђГ Г§Г¬ГҐГ°Г­Г®Г±ГІГЁ ГўГҐГЄГІГ®Г°Г®Гў Г­ГҐ Г±Г®ГўГЇГ Г¤Г ГѕГІ");
 		return 0.0;
 	}
 	la = Length(a);
