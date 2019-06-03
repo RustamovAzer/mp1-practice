@@ -1,69 +1,105 @@
 #pragma once
 #include "Nvector.h"
 #include <iostream>
-#include <locale.h>
 using namespace std;
 
 
 void main()
 {
-    setlocale(LC_ALL, "Russian");
-    double a1[5] = { 1, 2, 3, 4, 5 }, 
-        a2[5] = { 3, 1, 4, 1, 5 }, 
-        a3[3] = { 1, -3, -1 };
+    int n1;
+    cout << "Enter size vector 1: ";
+    cin >> n1;
+    Nvector v1(n1);
+    cout << " Enter coordinats" << " v1 = " << endl;
+    cin >> v1;
+    cout << "Coordinates of your vector: ";
+    cout << v1;
+    cout << endl << endl;
+
+
+
+    int n2;
+
+    cout << "Enter size vector 2: ";
+    cin >> n2;
+    Nvector v2(n2);
+    cout << " Enter coordinates" << " V2 = " << endl;
+    cin >> v2;
+    cout << "Coordinates of your vector: ";
+    cout << v2;
+    cout << endl << endl;
+
+    int a;
+    double l, m;
+    try
+    {
+        cout << "Addition of this vector: ";
+        cout << " V1 + V2 = V ( " << (v1 + v2) << ")" << endl;
+    }
+    catch (VectorUnequalDimensionException)
+    {
+        cout << "Unequal dimentions \n";
+    }
+    try
+    {
+        cout << "Subtraction of this vector: ";
+        cout << " V1 - V2 = V ( " << (v1 - v2) << ")" << endl << endl;
+    }
+    catch (VectorUnequalDimensionException)
+    {
+        cout << "Unequal dimentions \n";
+    }
 
     try
     {
-        Nvector v1(5, a1), v2(5, a2), v3(3, a3);
-        cout << "Вектор v1 = " << v1 << endl;
-        cout << "Вектор v2 = " << v2 << endl;
-        cout << "Вектор v3 = " << v3 << endl;
-
-
-        cout << "Длина v1 = " << v1.Length() << endl;
-        cout << "Длина v2 = " << v2.Length() << endl;
-        cout << "Длина v3 = " << v3.Length() << endl;
-
-
-        cout << "v1 + v2 = " << v1 + v2 << endl;
-        cout << "v1 - v2 = " << v1 - v2 << endl;
-        cout << "v1 * v2 = " << v1 * v2 << endl << endl;
-        
-        cout << "v1 + 5 = " << v1 + 5 << endl;
-        cout << "v1 - 3 = " << v1 - 3 << endl;
-        cout << "v1 * 8 = " << v1 * 8 << endl << endl;
-        
-        cout << "v1[5] = " << v1[5] << endl << endl;
-        cout << "v2[2] = " << v2[2] << endl << endl;
-        cout << "v2[2] + 2 " << v2[2] + 2 << endl << endl;
-
-        Nvector *test = new Nvector(3);
-        cout << "test = " << *test << endl << endl;
-        delete test;
-
-        Nvector vt(0, a1);
-        cout << "v3 * v1 = ";
-
+        cout << "Scalar product of two vectors = " << (v1 * v2);
+        cout << endl;
     }
-    catch (const int& ex)
+    catch (VectorUnequalDimensionException)
     {
-        switch (ex)
-        {
-        case 0:
-            cout << "Некорректно введены данные"<< endl;
-            break;
-        case 1:
-            cout << "Размерности векторов не совпадают" << endl;
-            break;
-        case 2:
-            cout << "Выход за пределы указателя" << endl;
-            break;
-        case 3:
-            cout << "Не достаточно памяти" << endl;
-            break;
-        default:
-            cout << "Неизвестная ошибка" << endl;
-            break;
-        }
+        cout << "Unequal dimentions \n";
+    }
+
+    try
+    {
+        cout << "Enter const for addition with Vector 1: ";
+        cin >> a;
+        cout << " V1 + const = V ( " << (v1 + a) << ")" << endl;
+
+        cout << "Enter const for subtraction with Vector 1: ";
+        cin >> a;
+        cout << " V1 - const = V ( " << (v1 - a) << ")" << endl;
+
+        cout << "Enter const for multiplication with Vector 1: ";
+        cin >> a;
+        cout << " V1 * const = V ( " << (v1 * a) << ")" << endl;
+
+        cout << endl;
+        v1 += v2;
+        cout << " V1 += V2 = V ( " << v1 << ")" << endl;
+
+        v1 -= v2;
+        cout << " V1 -= V2 = V ( " << v1 << ")" << endl;
+
+        cout << endl;
+        cout << "Enter const for addition with Vector 1 (+=): ";
+        cin >> a;
+        v1 += a;
+        cout << " V1 += const = V ( " << v1 << ")" << endl;
+
+        cout << "Enter const for subtraction with Vector 1(-=): ";
+        cin >> a;
+        v1 -= a;
+        cout << " V1 -= const = V ( " << v1 << ")" << endl << endl;
+
+        l = v1.Lenght();
+        cout << "Lenght of vector 1: " << l << endl;
+
+        m = v2.Lenght();
+        cout << "Lenght of vector 2: " << m << endl;
+    }
+    catch (VectorUnequalDimensionException)
+    {
+        cout << "Unequal dimentions \n";
     }
 }

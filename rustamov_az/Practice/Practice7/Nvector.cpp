@@ -3,7 +3,7 @@
 
 Nvector::Nvector(int _dim)
 {
-    if (dim <= 0) throw 0;
+    if (dim <= 0) throw VectorIncorrectVariablesException();
     dim = _dim;
     v = new double(dim);
     for (int i = 0; i < dim; i++)
@@ -23,7 +23,7 @@ Nvector::Nvector(Nvector& _x)
 Nvector::Nvector(int _dim, double *_v)
 {
     if ((*_v == NULL) || (_dim <= 0))
-        throw 0;
+        throw VectorIncorrectVariablesException();
 
     dim = _dim;
     v = new double[dim];
@@ -61,7 +61,7 @@ Nvector Nvector::operator+(const Nvector& b)
 {
     if (dim != b.dim)
     {
-        throw 1;
+        throw VectorUnequalDimensionException();
     }
     Nvector res(dim);
     for (int i = 0; i < dim; i++)
@@ -85,7 +85,7 @@ Nvector Nvector::operator-(const Nvector& _x)
 {
     if (dim != _x.dim)
     {
-        throw 1;
+        throw VectorUnequalDimensionException();
     }
     Nvector res(dim);
     for (int i = 0; i < dim; i++)
@@ -109,7 +109,7 @@ double Nvector::operator*(const Nvector& _x)
 {
     if (dim != _x.dim)
     {
-        throw 1;
+        throw VectorUnequalDimensionException();
     }
     double res = 0.0;
     for (int i = 0; i < dim; i++)
@@ -132,11 +132,11 @@ double& Nvector::operator[](int n)
 {
     if ((n < 0) || (n >= dim))
     {
-        throw 2;
+        throw VectorOutOfBoundsException();
     }
     return v[n];
 }
-double Nvector::Length()
+double Nvector::Lenght()
 {
     double res = 0.0;
     for (int i = 0; i < dim; i++)
@@ -150,7 +150,7 @@ Nvector Nvector::operator+=(const Nvector& _x)
 {
     if (dim != _x.dim)
     {
-        throw 1;
+        throw VectorUnequalDimensionException();
     }
     for (int i = 0; i < dim; i++)
     {
@@ -172,7 +172,7 @@ Nvector Nvector::operator-=(const Nvector& _x)
 {
     if (dim != _x.dim)
     {
-        throw 1;
+        throw VectorUnequalDimensionException();
     }
     for (int i = 0; i < dim; i++)
     {
@@ -194,7 +194,7 @@ Nvector Nvector::operator*=(const Nvector& _x)
 {
     if (dim != _x.dim)
     {
-        throw 1;
+        throw VectorUnequalDimensionException();
     }
     for (int i = 0; i < dim; i++)
     {
@@ -216,7 +216,7 @@ Nvector Nvector::operator*=(const double d)
  {
     void *p = malloc(size);
     if (p == NULL) {
-        throw 3;
+        throw VectorNotEnoughMemoryException();
     }
     return p;
 }
@@ -229,7 +229,7 @@ Nvector Nvector::operator*=(const double d)
  {
      void *res = malloc(sizeof(Nvector) * v);
      if (res == NULL)
-         throw 3;
+         throw VectorNotEnoughMemoryException();
      return res;
  }
 
@@ -292,6 +292,23 @@ void Nvector::Print()
      }
 
      return out;
- }
+  };
 
-  
+  const char* VectorIncorrectVariablesException::what() const
+  {
+      return what_str.c_str();
+  }
+
+  const char* VectorUnequalDimensionException::what() const
+  {
+      return what_str.c_str();
+  }
+
+  const char* VectorOutOfBoundsException::what() const
+  {
+      return what_str.c_str();
+  }
+  const char* VectorNotEnoughMemoryException::what() const
+  {
+      return what_str.c_str();
+  }
