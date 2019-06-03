@@ -1,5 +1,4 @@
 #include "Container.h" 
-#include "Exceptions.h" 
 
 void main()
 {
@@ -13,9 +12,9 @@ void main()
         cout << "the contents of the container1: " << Cont1 << endl;
         cout << "the contents of the container2: " << Cont2 << endl;
     }
-    catch (Exception e)
+    catch (ContainerOutOfBoundsExeption)
     {
-        e.Print();
+        cout << "Out of bounds";
     }
 
     try
@@ -26,9 +25,9 @@ void main()
         Cont2.Delete(2.2);
         cout << "Container 2 - num 2.2: " << Cont2 << endl;
     }
-    catch (Exception e)
+    catch (ContainerIsEmptyExeption)
     {
-        e.Print();
+        cout << "This container is empty";
     }
 
     try
@@ -38,11 +37,10 @@ void main()
 
         Cont2.Add(9.9);
         cout << "Container 2 + num 9.9: " << Cont2 << endl;
-
     }
-    catch (Exception e)
+    catch (ContainerIsFullExeption)
     {
-        e.Print();
+        cout << "This container is full";
     }
 
     int *arr11[5];
@@ -61,9 +59,9 @@ void main()
         cout << "the contents of the container1`: " << Cont11 << endl;
         cout << "the contents of the container2`: " << Cont22 << endl;
     }
-    catch (Exception e)
+    catch (ContainerOutOfBoundsExeption)
     {
-        e.Print();
+        cout << "Out of bounds";
     }
 
     try
@@ -79,26 +77,26 @@ void main()
         Cont11.Add(b1);
         cout << "Container 1` + num 1: " << Cont11 << endl;
     }
-    catch (Exception e)
+    catch (ContainerIsFullExeption)
     {
-        e.Print();
+        cout << "Your container is full";
     }
     try
     {
         int b = 2;
         int *b1 = &b;
 
-        Cont11.Delete(b1);
+        Cont11.Delete1(b1);
         cout << "Container 1` - num 2: " << Cont11 << endl;
 
         double a = 2.2;
         double *a1 = &a;
 
-        Cont22.Delete(a1);
+        Cont22.Delete1(a1);
         cout << "Container 2` - num 2.2: " << Cont22 << endl;
     }
-    catch (Exception e)
+    catch (ContainerIsEmptyExeption)
     {
-        e.Print();
+        cout << "This container is empty";
     }
 }
