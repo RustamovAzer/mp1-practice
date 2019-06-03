@@ -1,157 +1,150 @@
+
 #include "Matrix.h"
+#include <cstring>
+using namespace std;
 
-Matrix::Matrix()
-{
-    rows = 0;
-    cols = 0;
-    m = nullptr;
-}
 
-Matrix::Matrix(const Matrix& _m)
+Matrix::Matrix(int _rows, int _cols)
 {
-    rows = _m.rows;
-    cols = _m.cols;
-    unsigned elements = rows * cols;
-    m = new double[elements];
-    for (unsigned i = 0; i < elements; i++)
-        m[i] = _m.m[i];
-}
 
-Matrix::Matrix(unsigned _rows, unsigned _cols)
-{
     rows = _rows;
     cols = _cols;
-    unsigned elements = rows * cols;
-    m = new double[elements];
-    for (unsigned i = 0; i < elements; i++)
-        m[i] = 0;
+    m = new double[rows * cols];
+    memset(m, 0, rows * cols * sizeof(double));
 }
 
-Matrix::Matrix(double* _m, unsigned _rows, unsigned _cols)
+Matrix::Matrix(double* _m,int _rows, int _cols )
 {
+    if ((_rows <= 0) || (_cols <= 0))
+    {
+        throw  MatrixIncorrectIndexExeption();
+    }
     rows = _rows;
     cols = _cols;
-    unsigned elements = rows * cols;
-    m = new double[elements];
-    for (unsigned i = 0; i < elements; i++)
-        m[i] = _m[i];
+    m = new double[rows * cols];
+    memcpy(m, _m, (sizeof(double) * rows * cols));
+}
+
+Matrix::Matrix(const Matrix& x)
+{
+    rows = x.rows;
+    cols = x.cols;
+    m = new double[rows * cols];
+    memcpy(m, x.m, rows * cols * sizeof(double));
 }
 
 Matrix::~Matrix()
 {
     rows = 0;
     cols = 0;
-    delete[] m;
-}
-
-void Matrix::output()
-{
-    for (unsigned i = 0; i < rows; i++)
-    {
-        for (unsigned j = 0; j < cols; j++)
-            std::cout << m[i * cols + j] << " ";
-        std::cout << '\n';
-    }
-}
-
-void Matrix::input()
-{
-    std::cout << "Введите число строк: ";
-    std::cin >> rows;
-    std::cout << "Введите число столбцов: ";
-    std::cin >> cols;
-    *this = Matrix(rows, cols);
-    std::cout << "Введите значения элементов матрицы: ";
-    unsigned elements = rows * cols;
-    for (unsigned i = 0; i < elements; i++)
-    {
-        std::cin >> m[i];
-    }
-}
-
-Matrix Matrix::operator+(const Matrix& _m)
-{
-    if ((rows != _m.rows) || (cols != _m.cols))
-        throw "Размеры матриц не совпадают\n";
-    Matrix result(rows, cols);
-    unsigned elements = rows * cols;
-    for (unsigned i = 0; i < elements; i++)
-        result.m[i] = m[i] + _m.m[i];
-    return result;
-}
-
-Matrix Matrix::operator+(double d)
-{
-    if ((rows == 0) || (cols == 0))
-        return Matrix();
-    Matrix result(rows, cols);
-    unsigned elements = rows * cols;
-    for (unsigned i = 0; i < elements; i++)
-        result.m[i] = m[i] + d;
-    return result;
-}
-
-Matrix Matrix::operator-(const Matrix& _m)
-{
-    if ((rows != _m.rows) || (cols != _m.cols))
-        throw "Размеры матриц не совпадают\n";
-    Matrix result(rows, cols);
-    unsigned elements = rows * cols;
-    for (unsigned i = 0; i < elements; i++)
-        result.m[i] = m[i] - _m.m[i];
-    return result;
-}
-
-Matrix Matrix::operator-(double d)
-{
-    if (!rows || !cols)
-        return Matrix();
-    Matrix result(rows, cols);
-    unsigned elements = rows * cols;
-    for (unsigned i = 0; i < elements; i++)
-        result.m[i] = m[i] - d;
-    return result;
-}
-
-Matrix Matrix::operator*(const Matrix& _m)
-{
-    if ((rows != _m.cols) || (cols != _m.rows))
-        throw "Невозможно провести умножение\n";
-    Matrix result(rows, _m.cols);
-    for (unsigned i = 0; i < rows; i++)
-        for (unsigned j = 0; j < cols; j++)
-            for (unsigned k = 0; k < result.cols; k++)
-                result.m[i * cols + j] += m[i * result.cols + k] * _m.m[k * _m.cols + j];
-    return result;
-}
-
-Matrix Matrix::operator*(double d)
-{
-    if ((rows == 0) || (cols == 0))
-        return Matrix();
-    Matrix result(rows, cols);
-    unsigned elements = rows * cols;
-    for (unsigned i = 0; i < elements; i++)
-        result.m[i] = m[i] * d;
-    return result;
-}
-
-const Matrix& Matrix::operator=(const Matrix& _m)
-{
-    if ((rows == _m.rows) && (cols == _m.cols) && (m == _m.m))
-        return *this;
     if (m != nullptr)
         delete[] m;
-    rows = _m.rows;
-    cols = _m.cols;
-    unsigned elements = rows * cols;
-    m = new double[elements];
-    for (unsigned i = 0; i < elements; i++)
-        m[i] = _m.m[i];
-    return *this;
 }
 
-double* Matrix::operator[](unsigned index)
+Matrix Matrix::operator+(const Matrix&_m)
 {
-    return m + index * cols;
+    if ((rows != _m.rows) || (cols != _m.cols))
+    {
+        throw MatrixBadSizeExeption();
+    }
+    Matrix result(rows, cols);
+    for (int i = 0; i < rows; i++)
+        for (int j = 0; j < cols; j++)
+            result.m[i * cols + j] = m[i * cols + j] + _m.m[i * cols + j];
+    return result;
 }
+
+Matrix Matrix::operator+(double x)
+{
+    Matrix result(rows, cols);
+    for (int i = 0; i < rows; i++)
+        for (int j = 0; j < cols; j++)
+            result.m[i * cols + j] = m[i * cols + j] + x;
+    return result;
+}
+
+Matrix Matrix::operator-(const Matrix&_m)
+{
+    if ((rows != _m.rows) || (cols != _m.cols))
+    {
+        throw MatrixBadSizeExeption();
+    }
+    Matrix result(rows, cols);
+    for (int i = 0; i < rows; i++)
+        for (int j = 0; j < cols; j++)
+            result.m[i * cols + j] = m[i * cols + j] - _m.m[i * cols + j];
+    return result;
+}
+Matrix Matrix::operator-(double x)
+{
+    Matrix result(rows, cols);
+    for (int i = 0; i < rows; i++)
+        for (int j = 0; j < cols; j++)
+            result.m[i * cols + j] = m[i * cols + j] - x;
+    return result;
+}
+
+Matrix Matrix::operator*(const Matrix&_m)
+{
+    if ((rows != _m.cols) || (cols != _m.rows))
+        throw MatrixBadSizeExeption();
+    Matrix result(rows, _m.cols);
+    for (int i = 0; i < rows; i++)
+        for (int j = 0; j < _m.cols; j++)
+            for (int k = 0; k < cols; k++)
+                result.m[i * _m.cols + j] += m[i * cols + k] * _m.m[k * _m.cols + j];
+    return result;
+}
+
+Matrix Matrix::operator*(double x)
+{
+    Matrix result(rows, cols);
+    for (int i = 0; i < rows; i++)
+        for (int j = 0; j < cols; j++)
+            result.m[i * cols + j] = m[i * cols + j] * x;
+    return result;
+}
+
+const double* Matrix::operator[](int _i) const
+{
+    if ((_i < 0) || (_i > rows * cols))
+        throw MatrixIncorrectIndexExeption();
+    return(m + cols * _i);
+}
+
+
+bool Matrix::operator==(const Matrix& x) const
+{
+    if ((rows != x.rows) || (cols != x.cols))
+        return false;
+    for (int i = 0; i < rows * cols; i++)
+        if (m[i] != x.m[i])
+            return false;
+    return true;
+}
+
+ostream & operator<<(ostream & o, const Matrix & x)
+{
+    for (int i = 0; i < x.rows; i++)
+        for (int j = 0; j < x.cols; j++)
+            o << x.m[i * x.cols + j] << " ";
+    return o;
+};
+
+istream & operator >> (istream & o, const Matrix & x)
+{
+    for (int i = 0; i <x.rows * x.cols; i++)
+        o >> x.m[i];
+    return o;
+};
+
+const char* MatrixBadSizeExeption::what() const
+{
+    return what_str.c_str();
+}
+
+const char* MatrixIncorrectIndexExeption::what() const
+{
+    return what_str.c_str();
+}
+

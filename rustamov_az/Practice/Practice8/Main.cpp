@@ -1,66 +1,56 @@
-#include <iostream>
 #include "Matrix.h"
-#include <clocale>
+using namespace std;
 
 int main()
 {
-    setlocale(LC_ALL, "Russian");
-    double d = 0.0f;
-    std::cout << "Ведите число d = ";
-    std::cin >> d;
-    std::cout << "Матрица 1\n";
-    Matrix m1;
-    m1.input();
-    m1.output();
+    int x, y, a;
+    cout << "Enter size of Matrix 1: " << endl;
+    cin >> x >> y;
+    Matrix A(x, y);
 
-    std::cout << "Матрица 2\n";
-    Matrix m2;
-    m2.input();
-    m2.output();
+    cout << "Enter coefficients Matrix 1: " << endl;
+    cin >> A;
+    cout << "Your Matrix 1: " << A << endl;
 
-    Matrix m3;
-    std::cout << "m1 + m2:\n";
+    cout << "Enter size of Matrix 2: " << endl;
+    cin >> x >> y;
+    Matrix B(x, y);
+
+    cout << "Enter coefficients Matrix 2: " << endl;
+    cin >> B;
+    cout << "Your Matrix 2: " << B << endl;
+
+    cout << " Multiplication of this matrices: A * B = " << (A * B) << endl;
+
     try
     {
-        m3 = m1 + m2;
-        m3.output();
+        cout << "Enter const:" << endl;
+        cin >> a;
+        cout << "Matrix1 + const a = " << (A + a) << endl;
+
+        cout << "Matrix1 - const a = " << (A - a) << endl;
+
+        cout << "Matrix1 * const a = " << (A * a) << endl;
     }
-    catch (char* msg)
+    catch (MatrixBadSizeExeption)
     {
-        std::cout << "Исключение: " <<msg;
+        cout << "Unable to proceed with these sizes\n";
     }
-
-    std::cout << "m1 + d:\n";
-    m3 = m1 + d;
-    m3.output();
-
-    std::cout << "m1 - m2:\n";
     try
     {
-        m3 = m1 - m2;
-        m3.output();
+        cout << " Addition of Matrix 1 and Matrix 2:  A + B = " << (A + B) << endl;
     }
-    catch (char* msg)
+    catch (MatrixBadSizeExeption)
     {
-        std::cout << "Исключение: " << msg;
+        cout << "Unable to proceed with these sizes\n";
     }
-
-    std::cout << "m1 - d:\n";
-    m3 = m1 - d;
-    m3.output();
-
-    std::cout << "m1 * m2:\n";
     try
     {
-        m3 = m1 * m2;
-        m3.output();
-    }
-    catch (char* msg)
-    {
-        std::cout << "Исключение: " << msg;
-    }
+        cout << " Subtraction of Matrix 1 and Matrix 2: A - B = " << (A - B) << endl;
 
-    std::cout << "m1 * d:\n";
-    m3 = m1 * d;
-    m3.output();
+    }
+    catch (MatrixBadSizeExeption)
+    {
+        cout << "Unable to proceed with these sizes\n";
+    }
 }
