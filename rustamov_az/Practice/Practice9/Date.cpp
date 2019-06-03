@@ -1,4 +1,4 @@
-﻿#include "../headers/Date.h"
+﻿#include "Date.h"
 
 date::date()
 {
@@ -136,8 +136,6 @@ bool date::operator<=(const date& x) const
 	return (*this == x) || (*this > x);
 }
 
-// 0 - Неверная дата при вводе
-// 1 - Неверная дата при считывании из файла
 
 
 const char* bad_date_day::what() const

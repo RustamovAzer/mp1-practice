@@ -1,4 +1,4 @@
-﻿#include "../headers/Time.h"
+﻿#include "Time.h"
 
 time::time()
 {
@@ -37,7 +37,6 @@ time time::operator+(const time& x)
 	if (rez.hour > 24)
 	{
 		rez.hour -= 24;
-		//Date ++
 	}
 	return rez;
 }
@@ -49,7 +48,7 @@ time time::operator-(const time& x)
 	_hour_to_min1 = hour * 60 + min;
 	_hour_to_min2 = x.hour * 60 + x.min;
 	if (_hour_to_min1 < _hour_to_min2)
-		throw "Не могу из меньшего вычесть большее";
+		throw " Отрицательное время";
 	rez.hour = (_hour_to_min1 - _hour_to_min2) / 60;
 	rez.min = _hour_to_min1 - _hour_to_min2 - rez.hour * 60;
 	return rez;
