@@ -1,50 +1,23 @@
-﻿#include "TaskStd.h"
+﻿#include "TaskStd.h" 
+#include <iostream> 
+#include "Task.h"
 
-taskstd::taskstd() : task()
+using namespace std;
+
+TaskStd::TaskStd(string _des, Date _date, Time _t1, Time _t2)
 {
-	get_type(0);
-	description = "";
+    description = _des;
+    date = _date;
+    t1 = _t1;
+    t2 = _t2;
 }
 
-taskstd::taskstd(taskstd& x) : task(x)
+TaskStd::~TaskStd()
 {
-	get_type(x.set_type());
-	description = x.description;
+    description = nullptr;
 }
 
-taskstd::~taskstd()
+void TaskStd::Print()
 {
-
-}
-
-time taskstd::get_start()
-{
-	return start;
-}
-
-time taskstd::set_start(time x)
-{
-	start = x;
-	return x;
-}
-
-time taskstd::get_end()
-{
-	return end;
-}
-
-time taskstd::set_end(time x)
-{
-	end = x;
-	return x;
-}
-
-void taskstd::print()
-{
-	std::cout << "|" << description << "| [" << start_day << "] {Время начала: " << start << " Время конца: " << end << " Продолжительность: " << end - start << "}" << std::endl;
-}
-
-void taskstd::print(std::ofstream& s)
-{
-
+    cout << date << " " << t1 << "  " << t2 << " " << description << endl;
 }

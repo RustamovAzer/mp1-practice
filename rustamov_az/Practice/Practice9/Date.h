@@ -1,59 +1,25 @@
-﻿#ifndef _DATE_H_
-#define _DATE_H_
-#include <iostream>
-#include <fstream>
+﻿#ifndef _DATE_H_ 
+#define _DATE_H_ 
+#include <iostream> 
 
-class date
+class Date
 {
-	unsigned d, m, y;
+    unsigned int d, m, y;
 public:
-	date();
-	date(const date&);
-	date(unsigned, unsigned, unsigned);
-	~date();
-
-	unsigned get_days();
-	unsigned get_month();
-	unsigned get_year();
-
-	const date operator=(const date&);
-
-	bool operator==(const date&) const;
-	bool operator!=(const date&) const;
-	bool operator>(const date&) const;
-	bool operator>=(const date&) const;
-	bool operator<(const date&) const;
-	bool operator<=(const date&) const;
-
-	friend std::ostream& operator<<(std::ostream&, const date&);
+    Date();
+    Date(int, int, int);
+    Date(const Date&);
+    ~Date();
+    bool operator==(const Date& x) const;
+    const Date& operator=(const Date&);
+    friend std::ostream& operator<<(std::ostream &, const Date&);
+    friend std::istream& operator >> (std::istream &, Date&);
+};
+class DateIncorrectDateExeption : std::exception
+{
+    const std::string what_str = "Incorrect date";
+public:
+    const char* what() const;
 };
 
-class bad_date_day : std::exception
-{
-	const std::string what_str = "Некорректное число.";
-public:
-	const char* what() const;
-};
-
-class bad_date_month : std::exception
-{
-	const std::string what_str = "Некорректный месяц.";
-public:
-	const char* what() const;
-};
-
-class bad_date_year : std::exception
-{
-	const std::string what_str = "Некорректный год.";
-public:
-	const char* what() const;
-};
-
-class bad_date_input : std::exception 
-{
-	const std::string what_str = "Некорректная дата при вводе.";
-public:
-	const char* what() const;
-};
-
-#endif 
+#endif

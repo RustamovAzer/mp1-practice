@@ -1,159 +1,88 @@
-﻿#include "Date.h"
+﻿#include "Date.h" 
+#include <iostream> 
 
-date::date()
+using namespace std;
+
+Date::Date()
 {
-	d = 1U;
-	m = 1U;
-	y = 1970U;
+    d = 1;
+    m = 1;
+    y = 1;
 }
 
-date::date(const date& x)
+Date::Date(int _d, int _m, int _y)
 {
-	d = x.d;
-	m = x.m;
-	y = x.y;
+    if (_y <= 0)
+        throw DateIncorrectDateExeption();
+    if ((_m <= 0) || (_m > 12))
+        throw DateIncorrectDateExeption();
+    if ((_d <= 0) || (_d > 31))
+        throw DateIncorrectDateExeption();
+    if (_m == 2)
+    {
+        if (((_y % 4) == 0) || ((_y % 400) == 0) || ((_y % 100) != 0))
+        {
+            if ((_d <= 0) || (_d > 29))
+                throw DateIncorrectDateExeption();
+        }
+        else
+        {
+            if ((_d <= 0) || (_d > 28))
+                throw DateIncorrectDateExeption();
+        }
+    }
+
+
+    d = _d;
+    m = _m;
+    y = _y;
+
 }
 
-date::date(unsigned _d, unsigned _m, unsigned _y)
+Date::Date(const Date& x)
 {
-	if ((_d < 0) || (_d > 31))
-	{
-		throw bad_date_day();
-	}
-	if ((_m < 0) || (_m > 12))
-	{
-		throw bad_date_month();
-	}
-	if (_y < 0)
-	{
-		throw bad_date_year();
-	}
-	if (((_y % 400) == 0) || ((_y % 100 != 0) && (_y % 4 == 0)))
-	{
-		if ((_m == 2) && (_d >= 29))
-			throw bad_date_day();
-	}
-	if ((_m == 4) || (_m == 6) || (_m == 8) || (_m == 10))
-	{
-		if (_d > 30)
-			throw bad_date_day();
-	}
-	d = _d;
-	m = _m;
-	y = _y;
+    d = x.d;
+    m = x.m;
+    y = x.y;
 }
 
-date::~date()
+Date::~Date()
 {
-	d = m = y = 0U;
+    d = 0;
+    m = 0;
+    y = 0;
 }
 
-unsigned date::get_days()
+bool Date::operator==(const Date& x) const
 {
-	return d;
+    if ((d != x.d) || (m != x.m) || (y != x.y))
+        return false;
+    return true;
 }
 
-unsigned date::get_month()
+const Date& Date::operator=(const Date& x)
 {
-	return m;
+    if (&x == this)
+        return *this;
+    d = x.d;
+    m = x.m;
+    y = x.y;
+    return *this;
 }
 
-unsigned date::get_year()
+ostream & operator<<(ostream & o, const Date & x)
 {
-	return y;
+    o << x.d << x.m << x.y << " ";
+    return o;
 }
 
-const date date::operator=(const date& x)
+istream & operator >> (istream & o, Date & x)
 {
-	d = x.d;
-	m = x.m;
-	y = x.y;
-	return *this;
+    o >> x.d >> x.m >> x.y;
+    return o;
 }
 
-std::ostream& operator<<(std::ostream& s , const date& x)
+const char* DateIncorrectDateExeption::what() const
 {
-	if (x.d < 10)
-		s << "0" << x.d << ".";
-	else
-		s << x.d << ".";
-	if (x.m < 10)
-		s << "0" << x.m << ".";
-	else
-		s << x.m << ".";
-	s << x.y;
-	return s;
-}
-
-
-bool date::operator==(const date& x) const
-{
-	if ((d == x.d) && (m == x.m) && (y == x.y))
-		return true;
-	return false;
-}
-
-bool date::operator!=(const date& x) const
-{
-	if ((d != x.d) || (m != x.m) || (y != x.y))
-		return true;
-	return false;
-}
-
-bool date::operator>(const date& x) const
-{
-	if (*this == x)
-		return false;
-	if (y != x.y)
-		return y > x.y;
-	if (m != x.m)
-		return m > x.m;
-	if (d != x.d)
-		return d > x.d;
-	return false;
-}
-
-bool date::operator>=(const date& x) const
-{
-	return (*this == x) || (*this < x);
-}
-
-bool date::operator<(const date& x) const
-{
-	if (*this == x)
-		return false;
-	if (y != x.y)
-		return y < x.y;
-	if (m != x.m)
-		return m < x.m;
-	if (d != x.d)
-		return d < x.d;
-	return false;
-}
-
-bool date::operator<=(const date& x) const
-{
-	return (*this == x) || (*this > x);
-}
-
-
-
-const char* bad_date_day::what() const
-{
-	return what_str.c_str();
-}
-
-const char* bad_date_month::what() const
-{
-	return what_str.c_str();
-}
-
-const char* bad_date_year::what() const
-{
-	return what_str.c_str();
-}
-
-const char* bad_date_input::what() const
-{
-	return what_str.c_str();
+    return what_str.c_str();
 }

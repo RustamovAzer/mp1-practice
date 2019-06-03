@@ -1,40 +1,25 @@
-﻿#include "TaskDay.h"
+﻿#include "TaskDay.h" 
+#include <iostream> 
+#include "Task.h"
 
-taskday::taskday() : task()
+using namespace std;
+
+TaskDay::TaskDay()
 {
-	get_type(1);
-	description = "";
-	
 }
 
-taskday::taskday(taskday& x) : task(x)
+TaskDay::TaskDay(string _des, Date _date)
 {
-	 get_type(x.set_type());
-
-	 description = x.description;
+    description = _des;
+    date = _date;
 }
 
-taskday::~taskday()
+TaskDay::~TaskDay()
 {
-
+    description = nullptr;
 }
 
-time taskday::get_start()
+void TaskDay::Print()
 {
-	return time();
-}
-
-time taskday::get_end()
-{
-	return time();
-}
-
-void taskday::print()
-{
-	std::cout << "|" << description << "| [" << start_day << "]" << std::endl;
-}
-
-void taskday::print(std::ofstream& s)
-{
-
+    cout << date << "Your task is: " << description << endl;
 }

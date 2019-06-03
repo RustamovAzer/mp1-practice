@@ -1,43 +1,25 @@
-﻿#include "Task.h"
+﻿#include "Task.h" 
+#include "Date.h" 
+#include <iostream> 
 
-task::task()
+using namespace std;
+
+Task::Task()
 {
-	type = -1;
-	description = "";
 }
 
-task::task(task& x)
+Task::Task(string _des, Date _date)
 {
-	type = x.type;
-	description = x.description;
+    description = _des;
+    date = _date;
 }
 
-unsigned task::set_type()
+Task::~Task()
 {
-	return type;
+    description = nullptr;
 }
 
-void task::get_type(unsigned _type)
+Date Task::GetDate()
 {
-	type = _type;
-}
-
-time task::set_start(time x)
-{
-	return time();
-}
-
-time task::set_end(time x)
-{
-	return time();
-}
-
-void task::get_title()
-{
-	std::cout << description;
-}
-
-task::~task()
-{
-
+    return date;
 }

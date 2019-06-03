@@ -1,158 +1,66 @@
-﻿#include "Time.h"
+﻿#include "Time.h" 
+#include <iostream> 
 
-time::time()
+using namespace std;
+
+Time::Time()
 {
-	hour = min = 0U;
+    h = 0;
+    min = 0;
 }
 
-time::~time()
+Time::Time(int _h, int _min)
 {
-	hour = min = 0U;
+    if ((_h < 0) || (_h > 24))
+    {
+        throw TimeIncorrectTimeExeption();
+    }
+    if ((_min < 0) || (_min > 60))
+    {
+        throw TimeIncorrectTimeExeption();
+    }
+
+    h = _h;
+    min = _min;
+
 }
 
-time::time(const time& x)
+Time::Time(const Time& x)
 {
-	hour = x.hour;
-	min = x.min;
+    h = x.h;
+    min = x.min;
 }
 
-time::time(unsigned _hour, unsigned _min)
+Time::~Time()
 {
-	if ((_hour < 0) || (_hour > 24))
-		throw bad_time_hour();
-	if ((_min < 0) || (_min > 60))
-		throw bad_time_min();
-	hour = _hour;
-	min = _min;
+    h = 0;
+    min = 0;
 }
 
-time time::operator+(const time& x)
+
+const Time& Time::operator=(const Time& x)
 {
-	unsigned _hour_to_min1 = 0, _hour_to_min2 = 0;
-	time rez;
-	_hour_to_min1 = hour * 60 + min;
-	_hour_to_min2 = x.hour * 60 + x.min;
-	rez.hour = (_hour_to_min1 + _hour_to_min2) / 60;
-	rez.min = _hour_to_min1 + _hour_to_min2 - rez.hour * 60;
-	if (rez.hour > 24)
-	{
-		rez.hour -= 24;
-	}
-	return rez;
+    if (&x == this)
+        return *this;
+    h = x.h;
+    min = x.min;
+    return *this;
 }
 
-time time::operator-(const time& x)
+
+ostream & operator<<(ostream & o, const Time & x)
 {
-	unsigned _hour_to_min1 = 0, _hour_to_min2 = 0;
-	time rez;
-	_hour_to_min1 = hour * 60 + min;
-	_hour_to_min2 = x.hour * 60 + x.min;
-	if (_hour_to_min1 < _hour_to_min2)
-		throw " Отрицательное время";
-	rez.hour = (_hour_to_min1 - _hour_to_min2) / 60;
-	rez.min = _hour_to_min1 - _hour_to_min2 - rez.hour * 60;
-	return rez;
+    o << x.h << ":" << x.min << " ";
+    return o;
 }
 
-const time time::operator=(const time& x)
+istream & operator >> (istream & o, Time & x)
 {
-	hour = x.hour;
-	min = x.min;
-	return *this;
+    o >> x.h >> x.min;
+    return o;
 }
 
-std::ostream& operator << (std::ostream& s, const time& x)
+const char* TimeIncorrectTimeExeption::what() const
 {
-	if (x.hour < 10)
-		s << "0" << x.hour << ":";
-	else
-		s << x.hour << ":";
-	if (x.min < 10)
-		s << "0" << x.min;
-	else
-		s << x.min;
-	return s;
-}
-
-time time::set_hour(unsigned _hour)
-{
-	if ((_hour < 0) || (_hour > 12))
-		throw bad_time();
-	hour = _hour;
-	return *this;
-}
-
-time time::set_min(unsigned _min)
-{
-	if ((_min < 0) || (_min > 60))
-		throw bad_time();
-	min = _min;
-	return *this;
-}
-
-unsigned time::get_hour()
-{
-	return hour;
-}
-
-unsigned time::get_min()
-{
-	return min;
-}
-
-bool time::operator==(const time& x) const
-{
-	if ((hour == x.hour) && (min == x.min))
-		return true;
-	return false;
-}
-
-bool time::operator!=(const time& x) const
-{
-	if ((hour != x.hour) || (min != x.min))
-		return true;
-	return false;
-}
-
-bool time::operator>(const time& x) const
-{
-	if ((hour * 60 + min) > (x.hour * 60 + x.min))
-		return true;
-	return false;
-}
-
-bool time::operator>=(const time& x) const
-{
-	if ((hour * 60 + min) >= (x.hour * 60 + x.min))
-		return true;
-	return false;
-}
-
-bool time::operator<(const time& x) const
-{
-	if ((hour * 60 + min) < (x.hour * 60 + x.min))
-		return true;
-	return false;
-}
-
-bool time::operator<=(const time& x) const
-{
-	if ((hour * 60 + min) <= (x.hour * 60 + x.min))
-		return true;
-	return false;
-}
-
-const char* bad_time_hour::what() const
-{
-	return what_str.c_str();
-}
-
-const char* bad_time_min::what() const
-{
-	return what_str.c_str();
-}
-
-const char* bad_time::what() const
-{
-	return what_str.c_str();
+    return what_str.c_str();
 }

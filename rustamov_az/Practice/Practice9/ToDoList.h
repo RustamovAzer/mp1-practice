@@ -1,17 +1,40 @@
-﻿#ifndef _To_Do_List_H_
-#define _To_Do_List_H_
+﻿#ifndef _TODOLIST_H_
+#define _TODOLIST_H_
+#include <string>
+#include "Date.h"
 #include "Task.h"
-#include "TaskDay.h"
-#include "TaskStd.h"
 
-class ToDoList 
+using namespace std;
+
+class Todolist
 {
-	task** List;
-	unsigned count_tasks;
+    Task **task;
+    int n;
 public:
-	short read_tasks();
-	void print_tasks(date&);
-	void print_all_tasks();
+    Todolist();
+    ~Todolist();
+    void read(const string);
+    void print(Date);
 };
 
+class TaskBadFileExeption : std::exception
+{
+    const std::string what_str = "Unable to open a file";
+public:
+    const char* what() const;
+};
+
+class TaskIncorrectTypeExeption : std::exception
+{
+    const std::string what_str = "Incorrect type";
+public:
+    const char* what() const;
+};
+
+class TaskNoTasksExeption : std::exception
+{
+    const std::string what_str = "You haven`t got tasks on this day";
+public:
+    const char* what() const;
+};
 #endif

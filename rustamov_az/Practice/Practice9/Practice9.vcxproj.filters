@@ -13,34 +13,10 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="headers">
-      <UniqueIdentifier>{5b53728a-f0b8-458b-bd88-121c5ef3f1e4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="implementation">
-      <UniqueIdentifier>{10b1f143-4382-4835-8991-775aa779bade}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
       <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="implementation\Date.cpp">
-      <Filter>implementation</Filter>
-    </ClCompile>
-    <ClCompile Include="implementation\Task.cpp">
-      <Filter>implementation</Filter>
-    </ClCompile>
-    <ClCompile Include="implementation\TaskDay.cpp">
-      <Filter>implementation</Filter>
-    </ClCompile>
-    <ClCompile Include="implementation\TaskStd.cpp">
-      <Filter>implementation</Filter>
-    </ClCompile>
-    <ClCompile Include="implementation\Time.cpp">
-      <Filter>implementation</Filter>
-    </ClCompile>
-    <ClCompile Include="implementation\\ToDoList.cpp">
-      <Filter>implementation</Filter>
     </ClCompile>
     <ClCompile Include="Date.cpp">
       <Filter>Исходные файлы</Filter>
@@ -62,24 +38,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="headers\Date.h">
-      <Filter>headers</Filter>
-    </ClInclude>
-    <ClInclude Include="headers\Task.h">
-      <Filter>headers</Filter>
-    </ClInclude>
-    <ClInclude Include="headers\TaskDay.h">
-      <Filter>headers</Filter>
-    </ClInclude>
-    <ClInclude Include="headers\TaskStd.h">
-      <Filter>headers</Filter>
-    </ClInclude>
-    <ClInclude Include="headers\Time.h">
-      <Filter>headers</Filter>
-    </ClInclude>
-    <ClInclude Include="headers\ToDoList.h">
-      <Filter>headers</Filter>
-    </ClInclude>
     <ClInclude Include="Date.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>

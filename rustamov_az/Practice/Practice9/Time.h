@@ -1,56 +1,25 @@
-﻿#ifndef _TIME_H_
-#define _TIME_H_
-#include <iostream>
-#include <fstream>
+﻿#ifndef _TIME_H_ 
+#define _TIME_H_ 
+#include <iostream> 
 
-class time
+class Time
 {
-	unsigned hour, min;
+    int h, min;
 public:
-	time();
-	time(const time&);
-	time(unsigned, unsigned);
-	~time();
+    Time();
+    Time(int, int);
+    Time(const Time&);
+    ~Time();
 
-	time set_hour(unsigned);
-	time set_min(unsigned);
-
-	unsigned get_hour();
-	unsigned get_min();
-
-	bool operator==(const time&) const;
-	bool operator!=(const time&) const;
-	bool operator>(const time&) const;
-	bool operator>=(const time&) const;
-	bool operator<(const time&) const;
-	bool operator<=(const time&) const;
-
-	time operator+(const time&);
-	time operator-(const time&);
-	const time operator=(const time&);
-
-	friend std::ostream& operator<<(std::ostream&, const time&);
+    const Time& operator=(const Time&);
+    friend std::ostream& operator<<(std::ostream &, const Time&);
+    friend std::istream& operator >> (std::istream &, Time&);
 };
 
-class bad_time_hour : std::exception
+class TimeIncorrectTimeExeption : std::exception
 {
-	const std::string what_str = "Некорректный час.";
+    const std::string what_str = "Incorrect Time";
 public:
-	const char* what() const;
+    const char* what() const;
 };
-
-class bad_time_min : std::exception
-{
-	const std::string what_str = "Некорректные минуты.";
-public:
-	const char* what() const;
-};
-
-class bad_time : std::exception
-{
-	const std::string what_str = "Время начала больше времени конца.";
-public:
-	const char* what() const;
-};
-
-#endif 
+#endif
