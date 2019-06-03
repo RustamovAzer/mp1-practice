@@ -140,7 +140,7 @@ const Matrix& Matrix::operator=(const Matrix& _m)
 {
     if ((rows == _m.rows) && (cols == _m.cols) && (m == _m.m))
         return *this;
-    if (rows ^ _m.rows ^ cols ^ _m.cols) // сравним все хором
+    if (m != nullptr)
         delete[] m;
     rows = _m.rows;
     cols = _m.cols;
